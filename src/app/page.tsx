@@ -216,28 +216,12 @@ export default function Home() {
           About the GoPace Running Calculator
         </h2>
         <p className="mb-4">
-          GoPace is a free, mobile-friendly running pace calculator built for runners
-          training for the 5K, 10K, half marathon, or marathon. Whether you’re trying to
-          hit a goal time or curious how a certain pace plays out over a race distance,
-          this tool gives you fast and clear answers.
+          GoPace is a free, fast, and mobile-friendly running pace calculator. Whether you're training for a 5K, 10K, half marathon, or marathon, you can quickly convert between your running pace and expected finish time — or determine the pace required to hit your goal.
         </p>
         <p className="mb-4">
-          You can enter your target pace to see estimated finish times across distances,
-          or input a goal time to calculate the pace you need to maintain. GoPace supports
-          both mile and kilometer units and works well on desktop or mobile devices.
-        </p>
-        <p>
-          Unlike other bloated tools, GoPace is fast, simple, and free—no ads interrupting
-          your calculations, no unnecessary clutter. Just useful running math, done right.
+          Designed with simplicity in mind, GoPace works great on mobile and loads instantly, making it a handy tool for runners of all levels.
         </p>
       </section>
-
-      {/* Footer */}
-      <footer className="mt-20 mb-6 text-sm text-gray-400">
-        <a href="/privacy" className="hover:underline">
-          Privacy Policy
-        </a>
-      </footer>
     </main>
   );
 }

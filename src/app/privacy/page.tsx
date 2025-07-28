@@ -4,7 +4,9 @@ export default function PrivacyPage() {
       <div className="max-w-3xl bg-white shadow-lg rounded-xl p-6 sm:p-10">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Privacy Policy</h1>
         <p className="text-gray-600 mb-4">
-          <strong>Effective Date:</strong> {new Date().toLocaleDateString()}
+        <p className="text-gray-600 mb-4">
+          <strong>Effective Date:</strong> July 27, 2025
+        </p>        
         </p>
 
         <section className="space-y-4 text-gray-700 leading-relaxed">

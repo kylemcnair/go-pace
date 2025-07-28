@@ -46,9 +46,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head /> {/* ✅ Ensures metadata and icons render properly */}
       <body>
-        {/* ✅ Google AdSense */}
+        {/* Google AdSense */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4899830385307583"
@@ -58,7 +57,7 @@ export default function RootLayout({
 
         {children}
 
-        {/* ✅ Vercel Analytics */}
+        {/* Vercel Analytics */}
         <Analytics />
 
         <footer className="text-center py-6 text-sm text-gray-500">
