@@ -1,5 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react"; // ✅ Add this
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gopace.run"),
@@ -31,10 +33,8 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 };
@@ -47,7 +47,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {/* ✅ AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4899830385307583"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+
         {children}
+
+        {/* ✅ Vercel Analytics */}
+        <Analytics />
+
         <footer className="text-center py-6 text-sm text-gray-500">
           <a href="/privacy" className="hover:underline">
             Privacy Policy
