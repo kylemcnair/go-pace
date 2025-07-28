@@ -195,17 +195,49 @@ export default function Home() {
               </select>
             </div>
 
-            {timeHours || timeMinutes ? (
+            {(timeHours || timeMinutes) && (
               <div className="text-center">
                 <h3 className="text-xl font-semibold mb-2">Required Pace:</h3>
                 <p className="text-4xl font-bold text-blue-600">
                   {calculateRequiredPace()}
                 </p>
               </div>
-            ) : null}
+            )}
           </>
         )}
       </div>
+
+      {/* Separator */}
+      <hr className="w-full max-w-md my-16 border-gray-200" />
+
+      {/* SEO Copy */}
+      <section className="max-w-prose text-gray-700 text-base leading-relaxed px-4 text-center sm:text-left">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">
+          About the GoPace Running Calculator
+        </h2>
+        <p className="mb-4">
+          GoPace is a free, mobile-friendly running pace calculator built for runners
+          training for the 5K, 10K, half marathon, or marathon. Whether you’re trying to
+          hit a goal time or curious how a certain pace plays out over a race distance,
+          this tool gives you fast and clear answers.
+        </p>
+        <p className="mb-4">
+          You can enter your target pace to see estimated finish times across distances,
+          or input a goal time to calculate the pace you need to maintain. GoPace supports
+          both mile and kilometer units and works well on desktop or mobile devices.
+        </p>
+        <p>
+          Unlike other bloated tools, GoPace is fast, simple, and free—no ads interrupting
+          your calculations, no unnecessary clutter. Just useful running math, done right.
+        </p>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-20 mb-6 text-sm text-gray-400">
+        <a href="/privacy" className="hover:underline">
+          Privacy Policy
+        </a>
+      </footer>
     </main>
   );
 }
