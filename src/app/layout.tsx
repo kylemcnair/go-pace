@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gopace.run"), // ✅ This fixes the warning
+  metadataBase: new URL("https://gopace.run"),
   title: "GoPace – Free Running Pace Calculator",
   description:
     "Free running pace calculator for 5K, 10K, half marathon, and marathon. Calculate finish times or required pace easily.",
@@ -30,6 +30,13 @@ export const metadata: Metadata = {
       "Calculate your race finish time or pace instantly. Simple & free.",
     images: ["/og-image.png"],
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -39,16 +46,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="32x32" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        {/* Optional web manifest */}
-        {/* <link rel="manifest" href="/site.webmanifest" /> */}
-      </head>
       <body>
         {children}
         <footer className="text-center py-6 text-sm text-gray-500">
-          <a href="/privacy" className="hover:underline">Privacy Policy</a>
+          <a href="/privacy" className="hover:underline">
+            Privacy Policy
+          </a>
         </footer>
       </body>
     </html>
