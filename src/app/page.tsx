@@ -1,103 +1,198 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Head from "next/head";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [mode, setMode] = useState<"pace" | "time">("pace");
+  const [paceMinutes, setPaceMinutes] = useState("");
+  const [paceSeconds, setPaceSeconds] = useState("");
+  const [timeHours, setTimeHours] = useState("");
+  const [timeMinutes, setTimeMinutes] = useState("");
+  const [timeSeconds, setTimeSeconds] = useState("");
+  const [unit, setUnit] = useState<"mile" | "km">("mile");
+  const [selectedDistance, setSelectedDistance] = useState("Marathon");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const raceDistances = [
+    { label: "5K", miles: 3.106 },
+    { label: "10K", miles: 6.213 },
+    { label: "Half Marathon", miles: 13.109 },
+    { label: "Marathon", miles: 26.219 },
+  ];
+
+  const convertPaceToSeconds = () =>
+    parseInt(paceMinutes || "0") * 60 + parseInt(paceSeconds || "0");
+
+  const convertTimeToSeconds = () =>
+    parseInt(timeHours || "0") * 3600 +
+    parseInt(timeMinutes || "0") * 60 +
+    parseInt(timeSeconds || "0");
+
+  const calculateFinishTimes = () => {
+    const paceSec = convertPaceToSeconds();
+    return raceDistances.map((d) => {
+      const distance =
+        unit === "mile" ? d.miles : d.miles * 1.609; // convert to km if needed
+      const totalSec = paceSec * distance;
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = Math.floor(totalSec % 60);
+      return { label: d.label, time: `${h}h ${m}m ${s}s` };
+    });
+  };
+
+  const calculateRequiredPace = () => {
+    const timeSec = convertTimeToSeconds();
+    const selectedRace = raceDistances.find(
+      (d) => d.label === selectedDistance
+    );
+    if (!selectedRace) return "";
+    const distance = unit === "mile" ? selectedRace.miles : selectedRace.miles * 1.609;
+    const paceSec = timeSec / distance;
+    const m = Math.floor(paceSec / 60);
+    const s = Math.floor(paceSec % 60);
+    return `${m}:${s.toString().padStart(2, "0")} per ${unit}`;
+  };
+
+  return (
+    <>
+      <Head>
+        <title>GoPace – Free Running Pace Calculator</title>
+        <meta
+          name="description"
+          content="Free running pace calculator for 5K, 10K, half marathon, and marathon. Calculate finish times or find your required pace for race goals."
+        />
+      </Head>
+
+      <main className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
+        <h1 className="text-3xl font-bold mb-4">GoPace Calculator</h1>
+
+        <div className="flex gap-4 mb-6">
+          <button
+            onClick={() => setMode("pace")}
+            className={`px-4 py-2 rounded ${
+              mode === "pace" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Pace → Finish Time
+          </button>
+          <button
+            onClick={() => setMode("time")}
+            className={`px-4 py-2 rounded ${
+              mode === "time" ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
           >
-            Read our docs
-          </a>
+            Goal Time → Required Pace
+          </button>
         </div>
+
+        {mode === "pace" && (
+          <div className="w-full max-w-md bg-white p-6 rounded shadow">
+            <h2 className="text-xl font-semibold mb-4">Enter Your Pace</h2>
+            <div className="flex gap-2 mb-4">
+              <input
+                type="number"
+                placeholder="Min"
+                value={paceMinutes}
+                onChange={(e) => setPaceMinutes(e.target.value)}
+                className="border rounded p-2 w-1/2"
+              />
+              <input
+                type="number"
+                placeholder="Sec"
+                value={paceSeconds}
+                onChange={(e) => setPaceSeconds(e.target.value)}
+                className="border rounded p-2 w-1/2"
+              />
+            </div>
+            <div className="flex gap-4 mb-4">
+              <label>
+                <input
+                  type="radio"
+                  name="unit"
+                  checked={unit === "mile"}
+                  onChange={() => setUnit("mile")}
+                />
+                <span className="ml-1">min/mile</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="unit"
+                  checked={unit === "km"}
+                  onChange={() => setUnit("km")}
+                />
+                <span className="ml-1">min/km</span>
+              </label>
+            </div>
+
+            {paceMinutes && (
+              <div>
+                <h3 className="text-lg font-medium mb-2">Finish Times:</h3>
+                <ul className="space-y-2">
+                  {calculateFinishTimes().map((r) => (
+                    <li key={r.label} className="flex justify-between">
+                      <span>{r.label}</span>
+                      <span>{r.time}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        {mode === "time" && (
+          <div className="w-full max-w-md bg-white p-6 rounded shadow">
+            <h2 className="text-xl font-semibold mb-4">Enter Your Goal Time</h2>
+            <div className="flex gap-2 mb-4">
+              <input
+                type="number"
+                placeholder="Hrs"
+                value={timeHours}
+                onChange={(e) => setTimeHours(e.target.value)}
+                className="border rounded p-2 w-1/3"
+              />
+              <input
+                type="number"
+                placeholder="Min"
+                value={timeMinutes}
+                onChange={(e) => setTimeMinutes(e.target.value)}
+                className="border rounded p-2 w-1/3"
+              />
+              <input
+                type="number"
+                placeholder="Sec"
+                value={timeSeconds}
+                onChange={(e) => setTimeSeconds(e.target.value)}
+                className="border rounded p-2 w-1/3"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block mb-2 font-medium">Select Distance:</label>
+              <select
+                value={selectedDistance}
+                onChange={(e) => setSelectedDistance(e.target.value)}
+                className="border rounded p-2 w-full"
+              >
+                {raceDistances.map((d) => (
+                  <option key={d.label} value={d.label}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {timeHours || timeMinutes ? (
+              <div className="mt-4">
+                <h3 className="text-lg font-medium mb-2">Required Pace:</h3>
+                <p className="text-xl font-bold">{calculateRequiredPace()}</p>
+              </div>
+            ) : null}
+          </div>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }
