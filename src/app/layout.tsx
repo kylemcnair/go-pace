@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/react"; // ✅ Add this
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gopace.run"),
@@ -46,8 +46,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head /> {/* ✅ Ensures metadata and icons render properly */}
       <body>
-        {/* ✅ AdSense */}
+        {/* ✅ Google AdSense */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4899830385307583"

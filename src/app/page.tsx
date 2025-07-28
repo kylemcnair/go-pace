@@ -105,7 +105,7 @@ export default function Home() {
                 className="border border-gray-300 rounded-md p-4 text-lg w-1/2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="flex gap-6 mb-6 text-lg">
+            <div className="flex gap-6 mb-6 text-lg text-gray-800 font-medium">
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
