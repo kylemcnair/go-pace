@@ -53,8 +53,8 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex flex-col items-center px-4 py-8">
-      <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-8 text-center">
+    <main className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-10 font-sans">
+      <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">
         GoPace Calculator
       </h1>
 
@@ -62,45 +62,47 @@ export default function Home() {
       <div className="flex flex-col sm:flex-row w-full max-w-md gap-3 mb-8">
         <button
           onClick={() => setMode("pace")}
-          className={`w-full py-4 rounded-xl text-lg font-semibold shadow ${
+          className={`w-full py-4 rounded-lg text-lg font-medium transition shadow-sm ${
             mode === "pace"
-              ? "bg-blue-600 text-white"
-              : "bg-white border border-gray-300 text-gray-700"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
           }`}
         >
           Pace → Finish Time
         </button>
         <button
           onClick={() => setMode("time")}
-          className={`w-full py-4 rounded-xl text-lg font-semibold shadow ${
+          className={`w-full py-4 rounded-lg text-lg font-medium transition shadow-sm ${
             mode === "time"
-              ? "bg-blue-600 text-white"
-              : "bg-white border border-gray-300 text-gray-700"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
           }`}
         >
           Goal Time → Required Pace
         </button>
       </div>
 
-      {/* Card Container */}
-      <div className="w-full max-w-md bg-white shadow-xl rounded-xl p-6">
+      {/* Card */}
+      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
         {mode === "pace" && (
           <>
-            <h2 className="text-xl font-bold mb-4">Enter Your Pace</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+              Enter Your Pace
+            </h2>
             <div className="flex gap-3 mb-5">
               <input
                 type="number"
                 placeholder="Min"
                 value={paceMinutes}
                 onChange={(e) => setPaceMinutes(e.target.value)}
-                className="border border-gray-300 rounded-lg p-4 text-lg w-1/2 placeholder-gray-400"
+                className="border border-gray-300 rounded-md p-4 text-lg w-1/2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="number"
                 placeholder="Sec"
                 value={paceSeconds}
                 onChange={(e) => setPaceSeconds(e.target.value)}
-                className="border border-gray-300 rounded-lg p-4 text-lg w-1/2 placeholder-gray-400"
+                className="border border-gray-300 rounded-md p-4 text-lg w-1/2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="flex gap-6 mb-6 text-lg">
@@ -149,28 +151,30 @@ export default function Home() {
 
         {mode === "time" && (
           <>
-            <h2 className="text-xl font-bold mb-4">Enter Your Goal Time</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+              Enter Your Goal Time
+            </h2>
             <div className="flex gap-3 mb-5">
               <input
                 type="number"
                 placeholder="Hrs"
                 value={timeHours}
                 onChange={(e) => setTimeHours(e.target.value)}
-                className="border border-gray-300 rounded-lg p-4 text-lg w-1/3 placeholder-gray-400"
+                className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="number"
                 placeholder="Min"
                 value={timeMinutes}
                 onChange={(e) => setTimeMinutes(e.target.value)}
-                className="border border-gray-300 rounded-lg p-4 text-lg w-1/3 placeholder-gray-400"
+                className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="number"
                 placeholder="Sec"
                 value={timeSeconds}
                 onChange={(e) => setTimeSeconds(e.target.value)}
-                className="border border-gray-300 rounded-lg p-4 text-lg w-1/3 placeholder-gray-400"
+                className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -181,7 +185,7 @@ export default function Home() {
               <select
                 value={selectedDistance}
                 onChange={(e) => setSelectedDistance(e.target.value)}
-                className="border border-gray-300 rounded-lg p-4 text-lg w-full"
+                className="border border-gray-300 rounded-md p-4 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {raceDistances.map((d) => (
                   <option key={d.label} value={d.label}>
