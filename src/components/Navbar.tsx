@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
@@ -17,8 +18,15 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow z-50 px-4 py-3">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold text-blue-600">
-          GoPace
+        <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src="/favicon.ico"
+            alt="GoPace logo"
+            width={20}
+            height={20}
+            priority
+          />
+          <span className="text-xl font-bold text-blue-600">GoPace</span>
         </Link>
 
         {/* Desktop Menu */}
