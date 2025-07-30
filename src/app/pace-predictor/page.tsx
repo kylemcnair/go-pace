@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import SEOTextBlock from '@/components/SEOTextBlock';
 
 const standardDistances = [
   { label: '5K', km: 5 },
@@ -116,6 +117,8 @@ export default function PacePredictorPage() {
       <p className="text-sm text-gray-500 mt-6 text-center max-w-md">
         Predictions use the Riegel formula: T₂ = T₁ × (D₂ ÷ D₁)^1.06
       </p>
+
+      <SEOTextBlock />
     </main>
   );
 }
