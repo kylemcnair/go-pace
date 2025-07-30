@@ -60,10 +60,18 @@ export default function RootLayout({
         {/* Vercel Analytics */}
         <Analytics />
 
-        <footer className="text-center py-6 text-sm text-gray-500">
-          <a href="/privacy" className="hover:underline">
-            Privacy Policy
-          </a>
+        <footer className="text-center py-6 text-sm text-gray-500 space-y-2">
+          <p>
+            Looking for more?{" "}
+            <a href="/tools" className="text-blue-600 underline">
+              Explore all GoPace tools →
+            </a>
+          </p>
+          <p>
+            <a href="/privacy" className="hover:underline">
+              Privacy Policy
+            </a>
+          </p>
         </footer>
       </body>
     </html>

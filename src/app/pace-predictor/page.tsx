@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Navbar from '@/components/Navbar';
 import SEOTextBlock from '@/components/SEOTextBlock';
 
 const standardDistances = [
@@ -42,83 +43,87 @@ export default function PacePredictorPage() {
       : [];
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center px-4 py-10 font-sans">
-      <h1 className="text-4xl font-bold text-gray-900 mb-6 text-center">
-        Pace Predictor
-      </h1>
-      <p className="text-gray-700 mb-8 text-center max-w-md">
-        Enter a recent race result to predict your finish times for other distances using the Riegel formula.
-      </p>
+    <>
+      <Navbar />
 
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Recent Race</h2>
+      <main className="min-h-screen bg-gray-50 flex flex-col items-center px-4 pt-20 pb-10 font-sans">
+        <h1 className="text-4xl font-bold text-gray-900 mb-6 text-center">
+          Pace Predictor
+        </h1>
+        <p className="text-gray-700 mb-8 text-center max-w-md">
+          Enter a recent race result to predict your finish times for other distances using the Riegel formula.
+        </p>
 
-        <div className="mb-5">
-          <label className="block mb-2 font-medium text-lg text-gray-800">
-            Select Distance:
-          </label>
-          <select
-            value={selectedRaceLabel}
-            onChange={(e) => setSelectedRaceLabel(e.target.value)}
-            className="border border-gray-300 rounded-md p-4 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            {standardDistances.map((d) => (
-              <option key={d.label} value={d.label}>
-                {d.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Recent Race</h2>
 
-        <div className="flex gap-3 mb-6">
-          <input
-            type="number"
-            placeholder="Hrs"
-            value={raceHours}
-            onChange={(e) => setRaceHours(e.target.value)}
-            className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="number"
-            placeholder="Min"
-            value={raceMinutes}
-            onChange={(e) => setRaceMinutes(e.target.value)}
-            className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="number"
-            placeholder="Sec"
-            value={raceSeconds}
-            onChange={(e) => setRaceSeconds(e.target.value)}
-            className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        {predictions.length > 0 && (
-          <div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-800">
-              Predicted Finish Times:
-            </h3>
-            <ul className="space-y-3">
-              {predictions.map((p) => (
-                <li
-                  key={p.label}
-                  className="flex justify-between text-lg border-b pb-2"
-                >
-                  <span className="font-medium">{p.label}</span>
-                  <span className="font-semibold text-gray-700">{p.time}</span>
-                </li>
+          <div className="mb-5">
+            <label className="block mb-2 font-medium text-lg text-gray-800">
+              Select Distance:
+            </label>
+            <select
+              value={selectedRaceLabel}
+              onChange={(e) => setSelectedRaceLabel(e.target.value)}
+              className="border border-gray-300 rounded-md p-4 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {standardDistances.map((d) => (
+                <option key={d.label} value={d.label}>
+                  {d.label}
+                </option>
               ))}
-            </ul>
+            </select>
           </div>
-        )}
-      </div>
 
-      <p className="text-sm text-gray-500 mt-6 text-center max-w-md">
-        Predictions use the Riegel formula: T₂ = T₁ × (D₂ ÷ D₁)^1.06
-      </p>
+          <div className="flex gap-3 mb-6">
+            <input
+              type="number"
+              placeholder="Hrs"
+              value={raceHours}
+              onChange={(e) => setRaceHours(e.target.value)}
+              className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="number"
+              placeholder="Min"
+              value={raceMinutes}
+              onChange={(e) => setRaceMinutes(e.target.value)}
+              className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              type="number"
+              placeholder="Sec"
+              value={raceSeconds}
+              onChange={(e) => setRaceSeconds(e.target.value)}
+              className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-      <SEOTextBlock />
-    </main>
+          {predictions.length > 0 && (
+            <div>
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">
+                Predicted Finish Times:
+              </h3>
+              <ul className="space-y-3">
+                {predictions.map((p) => (
+                  <li
+                    key={p.label}
+                    className="flex justify-between text-lg border-b pb-2"
+                  >
+                    <span className="font-medium">{p.label}</span>
+                    <span className="font-semibold text-gray-700">{p.time}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <p className="text-sm text-gray-500 mt-6 text-center max-w-md">
+          Predictions use the Riegel formula: T₂ = T₁ × (D₂ ÷ D₁)^1.06
+        </p>
+
+        <SEOTextBlock />
+      </main>
+    </>
   );
 }
