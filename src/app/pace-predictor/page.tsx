@@ -43,7 +43,9 @@ export default function PacePredictorPage() {
       title="Pace Predictor"
       subtitle="Enter a recent race result to predict your finish times for other distances using the Riegel formula."
     >
+      {/* White card container */}
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
+        {/* Distance selector */}
         <div className="mb-5">
           <label className="block mb-2 font-medium text-lg text-gray-800">
             Select Distance:
@@ -61,6 +63,7 @@ export default function PacePredictorPage() {
           </select>
         </div>
 
+        {/* Time inputs */}
         <div className="flex gap-3 mb-6">
           <input
             type="number"
@@ -85,6 +88,7 @@ export default function PacePredictorPage() {
           />
         </div>
 
+        {/* Predictions list */}
         {predictions.length > 0 && (
           <div>
             <h3 className="text-xl font-semibold mb-3 text-gray-800">
@@ -96,8 +100,8 @@ export default function PacePredictorPage() {
                   key={p.label}
                   className="flex justify-between text-lg border-b pb-2"
                 >
-                  <span className="font-medium">{p.label}</span>
-                  <span className="font-semibold text-gray-700">{p.time}</span>
+                  <span className="font-medium text-gray-700">{p.label}</span>
+                  <span className="font-semibold text-gray-800">{p.time}</span>
                 </li>
               ))}
             </ul>
@@ -105,8 +109,9 @@ export default function PacePredictorPage() {
         )}
       </div>
 
-      <p className="text-sm text-gray-500 mt-6 text-center">
-        Predictions use the Riegel formula: T₂ = T₁ × (D₂ ÷ D₁)^1.06
+      {/* Formula note moved outside the white card */}
+      <p className="text-sm text-gray-500 mt-6 text-center max-w-md">
+        Predictions use the Riegel formula: T₁ × (D₂ ÷ D₁)^1.06
       </p>
     </ToolPageLayout>
   );
