@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
+import Card from '@/components/Card';
 
 const standardDistances = [
   { label: '5K', km: 5 },
@@ -43,8 +44,8 @@ export default function PacePredictorPage() {
       title="Pace Predictor"
       subtitle="Enter a recent race result to predict your finish times for other distances using the Riegel formula."
     >
-      {/* White card container */}
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
+      {/* Card */}
+      <Card>
         {/* Distance selector */}
         <div className="mb-5">
           <label className="block mb-2 font-medium text-lg text-gray-800">
@@ -107,9 +108,9 @@ export default function PacePredictorPage() {
             </ul>
           </div>
         )}
-      </div>
+      </Card>
 
-      {/* Formula note moved outside the white card */}
+      {/* Formula note */}
       <p className="text-sm text-gray-500 mt-6 text-center max-w-md">
         Predictions use the Riegel formula: T₁ × (D₂ ÷ D₁)^1.06
       </p>

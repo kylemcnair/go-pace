@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
+import Card from '@/components/Card';
 
 export default function Home() {
   const [mode, setMode] = useState<'pace' | 'time'>('pace');
@@ -81,7 +82,7 @@ export default function Home() {
       </div>
 
       {/* Card */}
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
+      <Card>
         {mode === 'pace' && (
           <>
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
@@ -203,7 +204,7 @@ export default function Home() {
             )}
           </>
         )}
-      </div>
+      </Card>
     </ToolPageLayout>
   );
 }
