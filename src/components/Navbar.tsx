@@ -1,13 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-export default function Navbar() {
+function NavbarContent() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();  const searchParams = useSearchParams();  const isActive = (href: string) => {    if (href === '/?mode=time') {      return pathname === '/' && searchParams.get('mode') === 'time';    }    if (href === '/?mode=pace') {      return pathname === '/' && searchParams.get('mode') !== 'time';    }    return pathname === href;  };
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  
+  const isActive = (href: string) => {
+    if (href === '/?mode=time') {
+      return pathname === '/' && searchParams.get('mode') === 'time';
+    }
+    if (href === '/?mode=pace') {
+      return pathname === '/' && searchParams.get('mode') !== 'time';
+    }
+    return pathname === href;
+  };
 
   const navItems = [
     { label: 'Pace Calculator', href: '/?mode=pace'},
@@ -82,5 +93,13 @@ export default function Navbar() {
         </div>
       )}
     </nav>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <Suspense fallback={<div className="fixed top-0 left-0 w-full bg-white shadow z-50 px-4 py-3 h-16"></div>}>
+      <NavbarContent />
+    </Suspense>
   );
 }

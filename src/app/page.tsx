@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 
-export default function Home() {
+function HomeContent() {
   const [mode, setMode] = useState<'pace' | 'time'>('pace');
   const searchParams = useSearchParams();
 
@@ -223,5 +223,13 @@ export default function Home() {
         )}
       </Card>
     </ToolPageLayout>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
