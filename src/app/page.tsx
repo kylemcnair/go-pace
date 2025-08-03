@@ -10,10 +10,15 @@ export default function Home() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams.get('mode') === 'time') {
+    const modeParam = searchParams.get('mode');
+    if (modeParam === 'time') {
       setMode('time');
+    } else if (modeParam === 'pace') {
+      setMode('pace');
     }
-  }, [searchParams]);  const [paceMinutes, setPaceMinutes] = useState('');
+  }, [searchParams]);
+
+  const [paceMinutes, setPaceMinutes] = useState('');
   const [paceSeconds, setPaceSeconds] = useState('');
   const [timeHours, setTimeHours] = useState('');
   const [timeMinutes, setTimeMinutes] = useState('');

@@ -7,10 +7,10 @@ import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();  const searchParams = useSearchParams();  const isActive = (href: string) => {    if (href === '/?mode=time') {      return pathname === '/' && searchParams.get('mode') === 'time';    }    if (href === '/') {      return pathname === '/' && searchParams.get('mode') !== 'time';    }    return pathname === href;  };
+  const pathname = usePathname();  const searchParams = useSearchParams();  const isActive = (href: string) => {    if (href === '/?mode=time') {      return pathname === '/' && searchParams.get('mode') === 'time';    }    if (href === '/?mode=pace') {      return pathname === '/' && searchParams.get('mode') !== 'time';    }    return pathname === href;  };
 
   const navItems = [
-    { label: 'Pace Calculator', href: '/'},
+    { label: 'Pace Calculator', href: '/?mode=pace'},
     { label: 'Goal Time Calculator', href: '/?mode=time'},
     { label: 'Pace Predictor', href: '/pace-predictor'},
     { label: 'Split Calculator', href: '/split-calculator'},
