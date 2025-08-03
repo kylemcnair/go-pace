@@ -1,19 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 
 export default function Home() {
   const [mode, setMode] = useState<'pace' | 'time'>('pace');
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get('mode') === 'time') {
-      setMode('time');
-    }
-  }, [searchParams]);  const [paceMinutes, setPaceMinutes] = useState('');
+  const [paceMinutes, setPaceMinutes] = useState('');
   const [paceSeconds, setPaceSeconds] = useState('');
   const [timeHours, setTimeHours] = useState('');
   const [timeMinutes, setTimeMinutes] = useState('');

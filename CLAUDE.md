@@ -179,3 +179,19 @@ export default function PageName() {
 - ESLint for code quality
 - Tailwind for consistent styling
 - Component-based architecture for maintainability
+
+# Important Development Notes
+
+## File Access Issues
+There appears to be an issue with the Read tool on this system where it returns "File does not exist" even when files clearly exist (confirmed by ls and other bash commands). When encountering this:
+1. Use bash commands like `cat`, `head`, `tail` to read file contents
+2. Use the Edit tool directly with content confirmed via bash commands
+3. Do NOT use the Write tool to "recreate" existing files - this overwrites them unnecessarily
+4. Always verify file existence with `ls` or bash commands before assuming files don't exist
+
+
+## Development Server Management
+- ALWAYS ensure localhost development server is running after making changes that need user verification
+- Use `npm run dev` to start the server (runs on http://localhost:3000)
+- Kill existing processes with `pkill -f "next dev"` if needed before restarting
+- The dev server auto-reloads on file changes, but restart if there are issues

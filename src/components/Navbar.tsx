@@ -3,19 +3,18 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname();  const searchParams = useSearchParams();  const isActive = (href: string) => {    if (href === '/?mode=time') {      return pathname === '/' && searchParams.get('mode') === 'time';    }    if (href === '/') {      return pathname === '/' && searchParams.get('mode') !== 'time';    }    return pathname === href;  };
 
   const navItems = [
-    { label: 'Calculator', href: '/' },
-    { label: 'Pace Predictor', href: '/pace-predictor' },
-    { label: 'Split Calculator', href: '/split-calculator' },
-    // Add more tools here as needed
+    { label: 'Pace Calculator', href: '/'},
+    { label: 'Goal Time Calculator', href: '/?mode=time'},
+    { label: 'Pace Predictor', href: '/pace-predictor'},
+    { label: 'Split Calculator', href: '/split-calculator'},
   ];
-
   return (
     <nav className="fixed top-0 left-0 w-full bg-white shadow z-50 px-4 py-3">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
@@ -37,7 +36,7 @@ export default function Navbar() {
               <Link
                 href={item.href}
                 className={`hover:underline ${
-                  pathname === item.href ? 'text-blue-600 font-semibold' : ''
+                  isActive(item.href) ? 'text-blue-600 font-semibold' : ''
                 }`}
               >
                 {item.label}
@@ -65,7 +64,7 @@ export default function Navbar() {
               href={item.href}
               onClick={() => setOpen(false)}
               className={`block py-2 text-base font-medium ${
-                pathname === item.href ? 'text-blue-600 font-semibold' : 'text-gray-800'
+                isActive(item.href) ? 'text-blue-600 font-semibold' : 'text-gray-800'
               }`}
             >
               {item.label}

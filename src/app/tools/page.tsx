@@ -10,6 +10,11 @@ export default function ToolsPage() {
       description: 'Estimate your finish time based on a known running pace.',
     },
     {
+      name: 'Goal Time → Required Pace Calculator',
+      href: '/?mode=time',
+      description: 'Calculate the pace needed to achieve your target finish time.',
+    },
+    {
       name: 'Pace Predictor',
       href: '/pace-predictor',
       description: 'Predict your race time using a recent effort and distance.',
@@ -45,3 +50,4 @@ export default function ToolsPage() {
     </main>
   );
 }
+
