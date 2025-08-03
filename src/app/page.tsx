@@ -18,6 +18,11 @@ export default function Home() {
     }
   }, [searchParams]);
 
+  const handleModeChange = (newMode: 'pace' | 'time') => {
+    setMode(newMode);
+    window.history.pushState({}, '', `/?mode=${newMode}`);
+  };
+
   const [paceMinutes, setPaceMinutes] = useState('');
   const [paceSeconds, setPaceSeconds] = useState('');
   const [timeHours, setTimeHours] = useState('');
@@ -72,7 +77,7 @@ export default function Home() {
       {/* Toggle Buttons */}
       <div className="flex flex-col sm:flex-row w-full max-w-md gap-3 mb-8">
         <button
-          onClick={() => setMode('pace')}
+          onClick={() => handleModeChange('pace')}
           className={`w-full py-4 rounded-lg text-lg font-medium transition shadow-sm ${
             mode === 'pace'
               ? 'bg-blue-600 text-white hover:bg-blue-700'
@@ -82,7 +87,7 @@ export default function Home() {
           Pace → Finish Time
         </button>
         <button
-          onClick={() => setMode('time')}
+          onClick={() => handleModeChange('time')}
           className={`w-full py-4 rounded-lg text-lg font-medium transition shadow-sm ${
             mode === 'time'
               ? 'bg-blue-600 text-white hover:bg-blue-700'
