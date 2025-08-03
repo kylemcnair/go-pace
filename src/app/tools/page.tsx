@@ -14,6 +14,11 @@ export default function ToolsPage() {
       href: '/pace-predictor',
       description: 'Predict your race time using a recent effort and distance.',
     },
+    {
+      name: 'Split Calculator',
+      href: '/split-calculator',
+      description: 'Plan your race pacing strategy with customizable positive or negative splits.',
+    },
   ];
 
   return (

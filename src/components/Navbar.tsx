@@ -12,6 +12,7 @@ export default function Navbar() {
   const navItems = [
     { label: 'Calculator', href: '/' },
     { label: 'Pace Predictor', href: '/pace-predictor' },
+    { label: 'Split Calculator', href: '/split-calculator' },
     // Add more tools here as needed
   ];
 
