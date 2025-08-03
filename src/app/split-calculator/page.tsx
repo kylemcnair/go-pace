@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
+import RunningFAQ from '@/components/RunningFAQ';
+import SEOTextBlock from '@/components/SEOTextBlock';
 
 const raceDistances = [
   { label: '5K', miles: 3.106, km: 5, mileSplits: 3, kmSplits: 5 },
@@ -12,6 +14,29 @@ const raceDistances = [
 ];
 
 export default function SplitCalculatorPage() {
+  const splitCalculatorFAQs = [
+    {
+      question: "What's the difference between even and negative splits?",
+      answer: "Even splits maintain the same pace throughout the race. Negative splits start slower and gradually increase pace, finishing faster than you started. Negative splits are often recommended for distance races as they help conserve energy early."
+    },
+    {
+      question: "Should I use even or negative split strategy?",
+      answer: "For most distance races (10K and longer), negative or even splits are recommended. This prevents early fatigue and allows for a strong finish. Shorter races like 5K can benefit from slightly faster early splits to establish position."
+    },
+    {
+      question: "How much should I negative split?",
+      answer: "Start 5-10 seconds per mile/km slower than goal pace for the first third, run goal pace for the middle third, and finish 5-10 seconds faster for the final third. Avoid dramatic pace changes which can be difficult to execute."
+    },
+    {
+      question: "How do I practice race splits in training?",
+      answer: "Practice splits during long runs and tempo workouts. Try progression runs where you gradually increase pace every few miles. Race simulation runs at goal pace help you internalize the feel of your target splits."
+    },
+    {
+      question: "What if I fall behind my splits during a race?",
+      answer: "Stay calm and adjust gradually. Don't try to make up large time deficits immediately as this often leads to burnout. Focus on getting back to goal pace over the next 1-2 miles rather than the next quarter-mile."
+    }
+  ];
+
   const [selectedDistance, setSelectedDistance] = useState('Marathon');
   const [unit, setUnit] = useState('mile');
   const [goalHours, setGoalHours] = useState('');
@@ -228,6 +253,22 @@ export default function SplitCalculatorPage() {
           </>
         )}
       </Card>
+
+      {/* Educational Content */}
+      <div className="mt-8 max-w-prose">
+        <div className="p-4 bg-blue-50 rounded-lg mb-6">
+          <h3 className="font-semibold text-gray-800 mb-2">Race Strategy Tips</h3>
+          <p className="text-gray-700 text-sm mb-2">
+            Effective split strategy can make the difference between a personal best and a disappointing race. The key is to run conservatively early and save energy for a strong finish.
+          </p>
+          <p className="text-gray-700 text-sm">
+            Remember: it's easier to speed up than to slow down once you've gone out too fast. Practice your goal splits during training runs to develop a feel for your target pace.
+          </p>
+        </div>
+      </div>
+
+      <RunningFAQ faqs={splitCalculatorFAQs} title="Split Strategy FAQ" />
+      <SEOTextBlock />
     </ToolPageLayout>
   );
 }

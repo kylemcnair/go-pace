@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
+import RunningFAQ from '@/components/RunningFAQ';
+import SEOTextBlock from '@/components/SEOTextBlock';
 
 const standardDistances = [
   { label: '5K', km: 5 },
@@ -12,6 +14,29 @@ const standardDistances = [
 ];
 
 export default function PacePredictorPage() {
+  const pacePredictorFAQs = [
+    {
+      question: "How accurate are race time predictions?",
+      answer: "Race predictions are estimates based on your current performance and established running formulas. Actual results depend on training, race conditions, strategy, and individual physiology. Use predictions as training goals, not guarantees."
+    },
+    {
+      question: "What factors affect race performance beyond fitness?",
+      answer: "Weather conditions, course elevation, race strategy, nutrition, hydration, sleep, and mental preparation all significantly impact performance. Hot weather and hills typically slow times, while ideal conditions can help you achieve personal bests."
+    },
+    {
+      question: "Should I train at my predicted race pace?",
+      answer: "Not for all runs. Use predicted paces for specific workouts like tempo runs and race-pace intervals. Most training should be at an easy, conversational pace to build aerobic fitness safely."
+    },
+    {
+      question: "How often should I update my race predictions?",
+      answer: "Update predictions after completing a race or time trial, or every 4-6 weeks during consistent training. Significant improvements typically take 6-12 weeks of consistent training to appear."
+    },
+    {
+      question: "Can I use shorter races to predict marathon times?",
+      answer: "Yes, but longer predictions become less accurate. A 5K predicts 10K well, but marathon predictions require good endurance base. Marathon performance depends heavily on long run training and fueling strategy."
+    }
+  ];
+
   const [raceHours, setRaceHours] = useState('');
   const [raceMinutes, setRaceMinutes] = useState('');
   const [raceSeconds, setRaceSeconds] = useState('');
@@ -110,10 +135,19 @@ export default function PacePredictorPage() {
         )}
       </Card>
 
-      {/* Formula note */}
-      <p className="text-sm text-gray-500 mt-6 text-center max-w-md">
-        Predictions use the Riegel formula: T₁ × (D₂ ÷ D₁)^1.06
-      </p>
+      {/* Educational Content */}
+      <div className="mt-8 max-w-prose">
+        <div className="p-4 bg-blue-50 rounded-lg mb-6">
+          <h3 className="font-semibold text-gray-800 mb-2">How Race Prediction Works</h3>
+          <p className="text-gray-700 text-sm">
+            Our predictions use the Riegel formula: T₁ × (D₂ ÷ D₁)^1.06, which accounts for the aerobic and anaerobic demands of different distances. 
+            The formula assumes proper training for the target distance and similar racing conditions.
+          </p>
+        </div>
+      </div>
+
+      <RunningFAQ faqs={pacePredictorFAQs} title="Race Prediction FAQ" />
+      <SEOTextBlock />
     </ToolPageLayout>
   );
 }

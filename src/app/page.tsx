@@ -4,6 +4,10 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
+import PaceGuide from '@/components/PaceGuide';
+import RaceTimeGuide from '@/components/RaceTimeGuide';
+import RunningFAQ from '@/components/RunningFAQ';
+import SEOTextBlock from '@/components/SEOTextBlock';
 
 function HomeContent() {
   const [mode, setMode] = useState<'pace' | 'time'>('pace');
@@ -30,6 +34,25 @@ function HomeContent() {
   const [timeSeconds, setTimeSeconds] = useState('');
   const [unit, setUnit] = useState<'mile' | 'km'>('mile');
   const [selectedDistance, setSelectedDistance] = useState('Marathon');
+
+  const paceCalculatorFAQs = [
+    {
+      question: "How accurate are these pace calculations?",
+      answer: "Our calculations use standard formulas based on distance and time. Real race performance can vary due to terrain, weather, fitness level, and race strategy. Use these as guidelines for training and goal setting."
+    },
+    {
+      question: "What's the difference between mile pace and kilometer pace?",
+      answer: "Mile pace is time per mile (used commonly in the US), while kilometer pace is time per kilometer (used internationally). A 7:00 mile pace equals approximately 4:21 per kilometer."
+    },
+    {
+      question: "Should I use my race pace for training runs?",
+      answer: "No, most training should be done at an easier pace. Race pace is typically used for specific workouts like tempo runs or race simulation. Easy runs should be 1-2 minutes per mile slower than race pace."
+    },
+    {
+      question: "How do I improve my running pace?",
+      answer: "Consistent training with a mix of easy runs, tempo runs, intervals, and long runs will improve your pace over time. Gradually increase weekly mileage and include one speed workout per week."
+    }
+  ];
 
   const raceDistances = [
     { label: '5K', miles: 3.106 },
@@ -222,6 +245,27 @@ function HomeContent() {
           </>
         )}
       </Card>
+
+      {/* Educational Content */}
+      {mode === 'pace' && paceMinutes && (
+        <PaceGuide 
+          paceMinutes={paceMinutes} 
+          paceSeconds={paceSeconds} 
+          unit={unit} 
+        />
+      )}
+      
+      {mode === 'time' && timeHours && (
+        <RaceTimeGuide 
+          timeHours={timeHours}
+          timeMinutes={timeMinutes}
+          timeSeconds={timeSeconds}
+          distance={selectedDistance}
+        />
+      )}
+
+      <RunningFAQ faqs={paceCalculatorFAQs} />
+      <SEOTextBlock />
     </ToolPageLayout>
   );
 }
