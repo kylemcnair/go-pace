@@ -195,3 +195,48 @@ There appears to be an issue with the Read tool on this system where it returns 
 - Use `npm run dev` to start the server (runs on http://localhost:3000)
 - Kill existing processes with `pkill -f "next dev"` if needed before restarting
 - The dev server auto-reloads on file changes, but restart if there are issues
+
+
+## Next.js Deployment & Build Requirements
+
+### Suspense Boundaries for useSearchParams
+**CRITICAL**: Any component using `useSearchParams()` must be wrapped in a Suspense boundary for static generation to work.
+
+Pattern to follow:
+```typescript
+// Component that uses useSearchParams
+function ComponentContent() {
+  const searchParams = useSearchParams();
+  // ... component logic
+  return (/* JSX */);
+}
+
+// Exported component with Suspense wrapper
+export default function Component() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ComponentContent />
+    </Suspense>
+  );
+}
+```
+
+**Current implementations using this pattern:**
+- `src/app/page.tsx`: Main page with mode switching via URL params
+- `src/components/Navbar.tsx`: Navigation highlighting based on current route/params
+
+### URL Parameter Management
+- Use `window.history.pushState()` for client-side URL updates (more reliable than Next.js router for param changes)
+- Always update both local state and URL params together for consistency
+- Example: `window.history.pushState({}, '', \`/?mode=${newMode}\`);`
+
+
+## Session Learning Documentation
+When working on this codebase, if you encounter patterns, solutions, or requirements that would likely be useful for future development sessions, add them to this CLAUDE.md file. This includes:
+- Build/deployment requirements and gotchas
+- Framework-specific patterns (Next.js, React, etc.)
+- Project-specific conventions or architectural decisions
+- Common debugging approaches that work for this codebase
+- Any fixes to development environment issues
+
+This helps maintain continuity across sessions and prevents repeating the same debugging work.
