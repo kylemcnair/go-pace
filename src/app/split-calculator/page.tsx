@@ -16,7 +16,7 @@ const raceDistances = [
 export default function SplitCalculatorPage() {
   const splitCalculatorFAQs = [
     {
-      question: "What's the difference between even and negative splits?",
+      question: "What&apos;s the difference between even and negative splits?",
       answer: "Even splits maintain the same pace throughout the race. Negative splits start slower and gradually increase pace, finishing faster than you started. Negative splits are often recommended for distance races as they help conserve energy early."
     },
     {
@@ -33,7 +33,7 @@ export default function SplitCalculatorPage() {
     },
     {
       question: "What if I fall behind my splits during a race?",
-      answer: "Stay calm and adjust gradually. Don't try to make up large time deficits immediately as this often leads to burnout. Focus on getting back to goal pace over the next 1-2 miles rather than the next quarter-mile."
+      answer: "Stay calm and adjust gradually. Don&apos;t try to make up large time deficits immediately as this often leads to burnout. Focus on getting back to goal pace over the next 1-2 miles rather than the next quarter-mile."
     }
   ];
 
@@ -262,7 +262,7 @@ export default function SplitCalculatorPage() {
             Effective split strategy can make the difference between a personal best and a disappointing race. The key is to run conservatively early and save energy for a strong finish.
           </p>
           <p className="text-gray-700 text-sm">
-            Remember: it's easier to speed up than to slow down once you've gone out too fast. Practice your goal splits during training runs to develop a feel for your target pace.
+            Remember: it&apos;s easier to speed up than to slow down once you&apos;ve gone out too fast. Practice your goal splits during training runs to develop a feel for your target pace.
           </p>
         </div>
       </div>
