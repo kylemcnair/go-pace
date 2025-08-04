@@ -7,7 +7,6 @@ import Card from '@/components/Card';
 import PaceGuide from '@/components/PaceGuide';
 import RaceTimeGuide from '@/components/RaceTimeGuide';
 import RunningFAQ from '@/components/RunningFAQ';
-import SEOTextBlock from '@/components/SEOTextBlock';
 
 function HomeContent() {
   const [mode, setMode] = useState<'pace' | 'time'>('pace');
@@ -37,8 +36,8 @@ function HomeContent() {
 
   const paceCalculatorFAQs = [
     {
-      question: "How accurate are these pace calculations?",
-      answer: "Our calculations use standard formulas based on distance and time. Real race performance can vary due to terrain, weather, fitness level, and race strategy. Use these as guidelines for training and goal setting."
+      question: "Will I actually run this pace in a race?",
+      answer: "These calculations show your mathematical pace, but real race performance varies due to terrain, weather, fitness level, and race strategy. Use these as guidelines for training and goal setting rather than exact predictions."
     },
     {
       question: "What's the difference between mile pace and kilometer pace?",
@@ -130,6 +129,8 @@ function HomeContent() {
             </h2>
             <div className="flex gap-3 mb-5">
               <input
+                id="pace-minutes"
+                name="pace-minutes"
                 type="number"
                 placeholder="Min"
                 value={paceMinutes}
@@ -137,6 +138,8 @@ function HomeContent() {
                 className="border border-gray-300 rounded-md p-4 text-lg w-1/2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
+                id="pace-seconds"
+                name="pace-seconds"
                 type="number"
                 placeholder="Sec"
                 value={paceSeconds}
@@ -147,6 +150,7 @@ function HomeContent() {
             <div className="flex gap-6 mb-6 text-lg text-gray-800 font-medium">
               <label className="flex items-center gap-2">
                 <input
+                  id="unit-mile"
                   type="radio"
                   name="unit"
                   checked={unit === 'mile'}
@@ -156,6 +160,7 @@ function HomeContent() {
               </label>
               <label className="flex items-center gap-2">
                 <input
+                  id="unit-km"
                   type="radio"
                   name="unit"
                   checked={unit === 'km'}
@@ -195,6 +200,8 @@ function HomeContent() {
             </h2>
             <div className="flex gap-3 mb-5">
               <input
+                id="time-hours"
+                name="time-hours"
                 type="number"
                 placeholder="Hrs"
                 value={timeHours}
@@ -202,6 +209,8 @@ function HomeContent() {
                 className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
+                id="time-minutes"
+                name="time-minutes"
                 type="number"
                 placeholder="Min"
                 value={timeMinutes}
@@ -209,6 +218,8 @@ function HomeContent() {
                 className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
+                id="time-seconds"
+                name="time-seconds"
                 type="number"
                 placeholder="Sec"
                 value={timeSeconds}
@@ -265,7 +276,6 @@ function HomeContent() {
       )}
 
       <RunningFAQ faqs={paceCalculatorFAQs} />
-      <SEOTextBlock />
     </ToolPageLayout>
   );
 }

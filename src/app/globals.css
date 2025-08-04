@@ -1,15 +1,19 @@
 /* ---------------------- */
-/* Tailwind Core Imports  */
+/* All Imports (must be first) */
 /* ---------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+/* ---------------------- */
+/* Tailwind Directives */
+/* ---------------------- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ---------------------- */
-/* Font + Base Theme Vars */
+/* Base Theme Vars */
 /* ---------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --background: #ffffff;

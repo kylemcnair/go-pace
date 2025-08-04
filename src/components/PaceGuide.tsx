@@ -15,7 +15,7 @@ export default function PaceGuide({ paceMinutes, paceSeconds, unit = 'mile' }: P
     if (pace < 300) { // Under 5:00
       return {
         level: "Elite/Competitive",
-        description: `Your ${Math.floor(pace/60)}:${(pace%60).toString().padStart(2, '0')} per ${unitText} pace is in the elite range. This pace suggests you&apos;re a highly trained competitive runner.`,
+        description: `Your ${Math.floor(pace/60)}:${(pace%60).toString().padStart(2, '0')} per ${unitText} pace is in the elite range. This pace suggests you are a highly trained competitive runner.`,
         trainingTips: [
           "Focus on speed maintenance and injury prevention",
           "Include regular tempo runs and interval training",
@@ -25,7 +25,7 @@ export default function PaceGuide({ paceMinutes, paceSeconds, unit = 'mile' }: P
     } else if (pace < 420) { // 5:00-7:00
       return {
         level: "Advanced",
-        description: `Your ${Math.floor(pace/60)}:${(pace%60).toString().padStart(2, '0')} per ${unitText} pace indicates advanced fitness. You&apos;re likely an experienced runner with consistent training.`,
+        description: `Your ${Math.floor(pace/60)}:${(pace%60).toString().padStart(2, '0')} per ${unitText} pace indicates advanced fitness. You are likely an experienced runner with consistent training.`,
         trainingTips: [
           "Mix tempo runs, intervals, and long runs for balanced training",
           "Consider incorporating hill training for strength",
@@ -35,7 +35,7 @@ export default function PaceGuide({ paceMinutes, paceSeconds, unit = 'mile' }: P
     } else if (pace < 540) { // 7:00-9:00
       return {
         level: "Intermediate",
-        description: `Your ${Math.floor(pace/60)}:${(pace%60).toString().padStart(2, '0')} per ${unitText} pace shows solid running fitness. You&apos;re building endurance and speed effectively.`,
+        description: `Your ${Math.floor(pace/60)}:${(pace%60).toString().padStart(2, '0')} per ${unitText} pace shows solid running fitness. You are building endurance and speed effectively.`,
         trainingTips: [
           "Focus on building aerobic base with easy runs",
           "Add one tempo run per week for lactate threshold improvement",

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 import RunningFAQ from '@/components/RunningFAQ';
-import SEOTextBlock from '@/components/SEOTextBlock';
 
 const standardDistances = [
   { label: '5K', km: 5 },
@@ -92,6 +91,8 @@ export default function PacePredictorPage() {
         {/* Time inputs */}
         <div className="flex gap-3 mb-6">
           <input
+            id="race-hours"
+            name="race-hours"
             type="number"
             placeholder="Hrs"
             value={raceHours}
@@ -99,6 +100,8 @@ export default function PacePredictorPage() {
             className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
+            id="race-minutes"
+            name="race-minutes"
             type="number"
             placeholder="Min"
             value={raceMinutes}
@@ -106,6 +109,8 @@ export default function PacePredictorPage() {
             className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
+            id="race-seconds"
+            name="race-seconds"
             type="number"
             placeholder="Sec"
             value={raceSeconds}
@@ -147,7 +152,6 @@ export default function PacePredictorPage() {
       </div>
 
       <RunningFAQ faqs={pacePredictorFAQs} title="Race Prediction FAQ" />
-      <SEOTextBlock />
     </ToolPageLayout>
   );
 }

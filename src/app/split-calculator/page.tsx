@@ -4,7 +4,6 @@ import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 import RunningFAQ from '@/components/RunningFAQ';
-import SEOTextBlock from '@/components/SEOTextBlock';
 
 const raceDistances = [
   { label: '5K', miles: 3.106, km: 5, mileSplits: 3, kmSplits: 5 },
@@ -16,7 +15,7 @@ const raceDistances = [
 export default function SplitCalculatorPage() {
   const splitCalculatorFAQs = [
     {
-      question: "What&apos;s the difference between even and negative splits?",
+      question: "What is the difference between even and negative splits?",
       answer: "Even splits maintain the same pace throughout the race. Negative splits start slower and gradually increase pace, finishing faster than you started. Negative splits are often recommended for distance races as they help conserve energy early."
     },
     {
@@ -33,7 +32,7 @@ export default function SplitCalculatorPage() {
     },
     {
       question: "What if I fall behind my splits during a race?",
-      answer: "Stay calm and adjust gradually. Don&apos;t try to make up large time deficits immediately as this often leads to burnout. Focus on getting back to goal pace over the next 1-2 miles rather than the next quarter-mile."
+      answer: "Stay calm and adjust gradually. Do not try to make up large time deficits immediately as this often leads to burnout. Focus on getting back to goal pace over the next 1-2 miles rather than the next quarter-mile."
     }
   ];
 
@@ -120,6 +119,7 @@ export default function SplitCalculatorPage() {
         <div className="flex gap-6 mb-6 text-lg text-gray-800 font-medium">
           <label className="flex items-center gap-2">
             <input
+              id="split-unit-mile"
               type="radio"
               name="unit"
               checked={unit === 'mile'}
@@ -129,6 +129,7 @@ export default function SplitCalculatorPage() {
           </label>
           <label className="flex items-center gap-2">
             <input
+              id="split-unit-km"
               type="radio"
               name="unit"
               checked={unit === 'km'}
@@ -144,6 +145,8 @@ export default function SplitCalculatorPage() {
           </label>
           <div className="flex gap-3">
             <input
+              id="goal-hours"
+              name="goal-hours"
               type="number"
               placeholder="Hrs"
               value={goalHours}
@@ -151,6 +154,8 @@ export default function SplitCalculatorPage() {
               className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
+              id="goal-minutes"
+              name="goal-minutes"
               type="number"
               placeholder="Min"
               value={goalMinutes}
@@ -158,6 +163,8 @@ export default function SplitCalculatorPage() {
               className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
+              id="goal-seconds"
+              name="goal-seconds"
               type="number"
               placeholder="Sec"
               value={goalSeconds}
@@ -262,13 +269,12 @@ export default function SplitCalculatorPage() {
             Effective split strategy can make the difference between a personal best and a disappointing race. The key is to run conservatively early and save energy for a strong finish.
           </p>
           <p className="text-gray-700 text-sm">
-            Remember: it&apos;s easier to speed up than to slow down once you&apos;ve gone out too fast. Practice your goal splits during training runs to develop a feel for your target pace.
+            Remember: it is easier to speed up than to slow down once you have gone out too fast. Practice your goal splits during training runs to develop a feel for your target pace.
           </p>
         </div>
       </div>
 
       <RunningFAQ faqs={splitCalculatorFAQs} title="Split Strategy FAQ" />
-      <SEOTextBlock />
     </ToolPageLayout>
   );
 }
