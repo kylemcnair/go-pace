@@ -1,7 +1,7 @@
 export default function SEOTextBlock() {
   return (
     <>
-      <hr className="w-full max-w-md my-16 border-gray-200" />
+      <hr className="w-full my-16 border-gray-200" />
 
       <section className="max-w-prose text-gray-700 text-base leading-relaxed px-4 text-center sm:text-left">
         <h2 className="text-xl font-semibold mb-4 text-gray-800">
