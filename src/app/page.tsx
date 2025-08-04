@@ -7,7 +7,11 @@ import Card from '@/components/Card';
 import PaceGuide from '@/components/PaceGuide';
 import RaceTimeGuide from '@/components/RaceTimeGuide';
 import RunningFAQ from '@/components/RunningFAQ';
-import { RACE_DISTANCES } from '@/utils/distances';
+import TimeInputGroup from '@/components/shared/TimeInputGroup';
+import UnitSelector from '@/components/shared/UnitSelector';
+import DistanceSelect from '@/components/DistanceSelect';
+import { RACE_DISTANCES, getDistanceByLabel } from '@/utils/distances';
+import { calculateAllFinishTimes, calculateRequiredPace } from '@/utils/paceCalculations';
 
 function HomeContent() {
   const [mode, setMode] = useState<'pace' | 'time'>('pace');
@@ -56,35 +60,16 @@ function HomeContent() {
 
   const raceDistances = RACE_DISTANCES;
 
-  const convertPaceToSeconds = () =>
-    parseInt(paceMinutes || '0') * 60 + parseInt(paceSeconds || '0');
-
-  const convertTimeToSeconds = () =>
-    parseInt(timeHours || '0') * 3600 +
-    parseInt(timeMinutes || '0') * 60 +
-    parseInt(timeSeconds || '0');
-
-  const calculateFinishTimes = () => {
-    const paceSec = convertPaceToSeconds();
-    return raceDistances.map(d => {
-      const distance = unit === 'mile' ? d.miles : d.miles * 1.609;
-      const totalSec = paceSec * distance;
-      const h = Math.floor(totalSec / 3600);
-      const m = Math.floor((totalSec % 3600) / 60);
-      const s = Math.floor(totalSec % 60);
-      return { label: d.label, time: `${h}h ${m}m ${s}s` };
-    });
+  const getFinishTimes = () => {
+    return calculateAllFinishTimes(paceMinutes, paceSeconds, raceDistances, unit);
   };
 
-  const calculateRequiredPace = () => {
-    const timeSec = convertTimeToSeconds();
-    const selectedRace = raceDistances.find(d => d.label === selectedDistance);
+  const getRequiredPace = () => {
+    const selectedRace = getDistanceByLabel(selectedDistance);
     if (!selectedRace) return '';
-    const distance = unit === 'mile' ? selectedRace.miles : selectedRace.miles * 1.609;
-    const paceSec = timeSec / distance;
-    const m = Math.floor(paceSec / 60);
-    const s = Math.floor(paceSec % 60);
-    return `${m}:${s.toString().padStart(2, '0')} per ${unit}`;
+    
+    const pace = calculateRequiredPace(timeHours, timeMinutes, timeSeconds, selectedRace, unit);
+    return `${pace} per ${unit}`;
   };
 
   return (
@@ -123,48 +108,24 @@ function HomeContent() {
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Enter Your Pace
             </h2>
-            <div className="flex gap-3 mb-5">
-              <input
-                id="pace-minutes"
-                name="pace-minutes"
-                type="number"
-                placeholder="Min"
-                value={paceMinutes}
-                onChange={e => setPaceMinutes(e.target.value)}
-                className="border border-gray-300 rounded-md p-4 text-lg w-1/2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                id="pace-seconds"
-                name="pace-seconds"
-                type="number"
-                placeholder="Sec"
-                value={paceSeconds}
-                onChange={e => setPaceSeconds(e.target.value)}
-                className="border border-gray-300 rounded-md p-4 text-lg w-1/2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <div className="mb-5">
+              <TimeInputGroup
+                hours=""
+                minutes={paceMinutes}
+                seconds={paceSeconds}
+                onHoursChange={() => {}} // Not used for pace
+                onMinutesChange={setPaceMinutes}
+                onSecondsChange={setPaceSeconds}
+                showHours={false}
+                idPrefix="pace"
               />
             </div>
-            <div className="flex gap-6 mb-6 text-lg text-gray-800 font-medium">
-              <label className="flex items-center gap-2">
-                <input
-                  id="unit-mile"
-                  type="radio"
-                  name="unit"
-                  checked={unit === 'mile'}
-                  onChange={() => setUnit('mile')}
-                />
-                min/mile
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  id="unit-km"
-                  type="radio"
-                  name="unit"
-                  checked={unit === 'km'}
-                  onChange={() => setUnit('km')}
-                />
-                min/km
-              </label>
-            </div>
+            <UnitSelector
+              unit={unit}
+              onUnitChange={setUnit}
+              idPrefix="pace"
+              className="mb-6"
+            />
 
             {paceMinutes && (
               <div>
@@ -172,7 +133,7 @@ function HomeContent() {
                   Your Estimated Finish Times:
                 </h3>
                 <ul className="space-y-3">
-                  {calculateFinishTimes().map(r => (
+                  {getFinishTimes().map(r => (
                     <li
                       key={r.label}
                       className="flex justify-between text-lg border-b pb-2"
@@ -194,33 +155,16 @@ function HomeContent() {
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Enter Your Goal Time
             </h2>
-            <div className="flex gap-3 mb-5">
-              <input
-                id="time-hours"
-                name="time-hours"
-                type="number"
-                placeholder="Hrs"
-                value={timeHours}
-                onChange={e => setTimeHours(e.target.value)}
-                className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                id="time-minutes"
-                name="time-minutes"
-                type="number"
-                placeholder="Min"
-                value={timeMinutes}
-                onChange={e => setTimeMinutes(e.target.value)}
-                className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                id="time-seconds"
-                name="time-seconds"
-                type="number"
-                placeholder="Sec"
-                value={timeSeconds}
-                onChange={e => setTimeSeconds(e.target.value)}
-                className="border border-gray-300 rounded-md p-4 text-lg w-1/3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            <div className="mb-5">
+              <TimeInputGroup
+                hours={timeHours}
+                minutes={timeMinutes}
+                seconds={timeSeconds}
+                onHoursChange={setTimeHours}
+                onMinutesChange={setTimeMinutes}
+                onSecondsChange={setTimeSeconds}
+                showHours={true}
+                idPrefix="time"
               />
             </div>
 
@@ -228,26 +172,19 @@ function HomeContent() {
               <label htmlFor="distance-select" className="block mb-2 font-medium text-lg text-gray-800">
                 Select Distance:
               </label>
-              <select
+              <DistanceSelect
                 id="distance-select"
-                name="distance-select"
                 value={selectedDistance}
-                onChange={e => setSelectedDistance(e.target.value)}
+                onChange={setSelectedDistance}
                 className="border border-gray-300 rounded-md p-4 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {raceDistances.map(d => (
-                  <option key={d.label} value={d.label}>
-                    {d.label}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
 
             {(timeHours || timeMinutes) && (
               <div className="text-center">
                 <h3 className="text-xl font-semibold mb-2">Required Pace:</h3>
                 <p className="text-4xl font-bold text-blue-600">
-                  {calculateRequiredPace()}
+                  {getRequiredPace()}
                 </p>
               </div>
             )}
