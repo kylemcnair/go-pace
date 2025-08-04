@@ -4,13 +4,9 @@ import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 import RunningFAQ from '@/components/RunningFAQ';
+import { RACE_DISTANCES } from '@/utils/distances';
 
-const raceDistances = [
-  { label: '5K', miles: 3.106, km: 5, mileSplits: 3, kmSplits: 5 },
-  { label: '10K', miles: 6.213, km: 10, mileSplits: 6, kmSplits: 10 },
-  { label: 'Half Marathon', miles: 13.109, km: 21.0975, mileSplits: 13, kmSplits: 21 },
-  { label: 'Marathon', miles: 26.219, km: 42.195, mileSplits: 26, kmSplits: 42 },
-];
+const raceDistances = RACE_DISTANCES;
 
 export default function SplitCalculatorPage() {
   const splitCalculatorFAQs = [

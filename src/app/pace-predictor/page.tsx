@@ -4,13 +4,9 @@ import { useState } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 import RunningFAQ from '@/components/RunningFAQ';
+import { RACE_DISTANCES } from '@/utils/distances';
 
-const standardDistances = [
-  { label: '5K', km: 5 },
-  { label: '10K', km: 10 },
-  { label: 'Half Marathon', km: 21.0975 },
-  { label: 'Marathon', km: 42.195 },
-];
+const standardDistances = RACE_DISTANCES;
 
 export default function PacePredictorPage() {
   const pacePredictorFAQs = [

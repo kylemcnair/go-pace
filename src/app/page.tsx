@@ -7,6 +7,7 @@ import Card from '@/components/Card';
 import PaceGuide from '@/components/PaceGuide';
 import RaceTimeGuide from '@/components/RaceTimeGuide';
 import RunningFAQ from '@/components/RunningFAQ';
+import { RACE_DISTANCES } from '@/utils/distances';
 
 function HomeContent() {
   const [mode, setMode] = useState<'pace' | 'time'>('pace');
@@ -53,12 +54,7 @@ function HomeContent() {
     }
   ];
 
-  const raceDistances = [
-    { label: '5K', miles: 3.106 },
-    { label: '10K', miles: 6.213 },
-    { label: 'Half Marathon', miles: 13.109 },
-    { label: 'Marathon', miles: 26.219 },
-  ];
+  const raceDistances = RACE_DISTANCES;
 
   const convertPaceToSeconds = () =>
     parseInt(paceMinutes || '0') * 60 + parseInt(paceSeconds || '0');
