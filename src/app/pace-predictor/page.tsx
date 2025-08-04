@@ -68,10 +68,12 @@ export default function PacePredictorPage() {
       <Card>
         {/* Distance selector */}
         <div className="mb-5">
-          <label className="block mb-2 font-medium text-lg text-gray-800">
+          <label htmlFor="predictor-race-select" className="block mb-2 font-medium text-lg text-gray-800">
             Select Distance:
           </label>
           <select
+            id="predictor-race-select"
+            name="predictor-race-select"
             value={selectedRaceLabel}
             onChange={e => setSelectedRaceLabel(e.target.value)}
             className="border border-gray-300 rounded-md p-4 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"

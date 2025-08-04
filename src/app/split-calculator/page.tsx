@@ -96,10 +96,12 @@ export default function SplitCalculatorPage() {
     >
       <Card>
         <div className="mb-5">
-          <label className="block mb-2 font-medium text-lg text-gray-800">
+          <label htmlFor="split-distance-select" className="block mb-2 font-medium text-lg text-gray-800">
             Select Distance:
           </label>
           <select
+            id="split-distance-select"
+            name="split-distance-select"
             value={selectedDistance}
             onChange={e => setSelectedDistance(e.target.value)}
             className="border border-gray-300 rounded-md p-4 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -136,7 +138,7 @@ export default function SplitCalculatorPage() {
         </div>
 
         <div className="mb-6">
-          <label className="block mb-2 font-medium text-lg text-gray-800">
+          <label htmlFor="goal-hours" className="block mb-2 font-medium text-lg text-gray-800">
             Goal Time:
           </label>
           <div className="flex gap-3">
@@ -191,12 +193,14 @@ export default function SplitCalculatorPage() {
               </div>
             </div>
                         <div className="mb-6">
-              <label className="block mb-2 font-medium text-lg text-gray-800">
+              <label htmlFor="split-profile" className="block mb-2 font-medium text-lg text-gray-800">
                 Split Profile:
               </label>
               <div className="flex items-center gap-4">
                 <span className="text-sm text-gray-600">Faster Start</span>
                 <input
+                  id="split-profile"
+                  name="split-profile"
                   type="range"
                   min="-1"
                   max="1"

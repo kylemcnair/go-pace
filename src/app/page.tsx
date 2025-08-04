@@ -225,10 +225,12 @@ function HomeContent() {
             </div>
 
             <div className="mb-6">
-              <label className="block mb-2 font-medium text-lg text-gray-800">
+              <label htmlFor="distance-select" className="block mb-2 font-medium text-lg text-gray-800">
                 Select Distance:
               </label>
               <select
+                id="distance-select"
+                name="distance-select"
                 value={selectedDistance}
                 onChange={e => setSelectedDistance(e.target.value)}
                 className="border border-gray-300 rounded-md p-4 text-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
