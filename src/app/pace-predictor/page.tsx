@@ -5,7 +5,7 @@ import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 import RunningFAQ from '@/components/RunningFAQ';
 import { RACE_DISTANCES } from '@/utils/distances';
-
+import { calculateVDOT, predictTimeWithVDOT, secondsToTime } from '@/utils/paceCalculations';
 const standardDistances = RACE_DISTANCES;
 
 export default function PacePredictorPage() {
@@ -45,24 +45,41 @@ export default function PacePredictorPage() {
   const selectedRace = standardDistances.find(d => d.label === selectedRaceLabel);
   const selectedDistanceKm = selectedRace?.km || 0;
 
+  const formatTime = (seconds: number): string => {
+    const time = secondsToTime(seconds);
+    if (time.hours > 0) {
+      return `${time.hours}:${time.minutes.toString().padStart(2, "0")}:${time.seconds.toString().padStart(2, "0")}`;
+    } else {
+      return `${time.minutes}:${time.seconds.toString().padStart(2, "0")}`;
+    }
+  };
+
+  const userVDOT = totalTimeInSeconds > 0 && selectedDistanceKm > 0 
+    ? calculateVDOT(totalTimeInSeconds, selectedDistanceKm)
+    : null;
+
   const predictions =
     totalTimeInSeconds > 0 && selectedDistanceKm > 0
       ? standardDistances
           .filter(d => d.label !== selectedRaceLabel)
           .map(d => {
-            const predictedSeconds =
-              totalTimeInSeconds * Math.pow(d.km / selectedDistanceKm, 1.06);
-            const h = Math.floor(predictedSeconds / 3600);
-            const m = Math.floor((predictedSeconds % 3600) / 60);
-            const s = Math.round(predictedSeconds % 60);
-            return { label: d.label, time: `${h}h ${m}m ${s}s` };
+            // Riegel prediction
+            const riegelSeconds = totalTimeInSeconds * Math.pow(d.km / selectedDistanceKm, 1.06);
+            
+            // VDOT prediction
+            const vdotSeconds = predictTimeWithVDOT(userVDOT!, d.label);
+            
+            return { 
+              label: d.label, 
+              riegel: formatTime(riegelSeconds),
+              vdot: formatTime(vdotSeconds)
+            };
           })
       : [];
-
   return (
     <ToolPageLayout
       title="Pace Predictor"
-      subtitle="Enter a recent race result to predict your finish times for other distances using the Riegel formula."
+      subtitle="Enter a recent race result to predict your finish times using multiple proven running formulas."
     >
       {/* Card */}
       <Card>
@@ -117,26 +134,47 @@ export default function PacePredictorPage() {
           />
         </div>
 
+        {/* VDOT display */}
+        {totalTimeInSeconds > 0 && selectedDistanceKm > 0 && (
+          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+            <div className="text-center">
+              <div className="text-sm text-gray-600 mb-1">Your VDOT Score</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {userVDOT}
+              </div>
+              <div className="text-sm text-gray-600">
+                A measure of your aerobic running fitness (Daniels VDOT)
+              </div>
+            </div>
+          </div>
+        )}
         {/* Predictions list */}
         {predictions.length > 0 && (
           <div>
-            <h3 className="text-xl font-semibold mb-3 text-gray-800">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">
               Predicted Finish Times:
             </h3>
-            <ul className="space-y-3">
+            <div className="space-y-4">
               {predictions.map(p => (
-                <li
-                  key={p.label}
-                  className="flex justify-between text-lg border-b pb-2"
-                >
-                  <span className="font-medium text-gray-700">{p.label}</span>
-                  <span className="font-semibold text-gray-800">{p.time}</span>
-                </li>
+                <div key={p.label} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-lg font-medium text-gray-800">{p.label}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="text-center">
+                      <div className="text-gray-600">Riegel Formula</div>
+                      <div className="font-semibold text-blue-600">{p.riegel}</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-gray-600">Daniels VDOT</div>
+                      <div className="font-semibold text-green-600">{p.vdot}</div>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
-        )}
-      </Card>
+        )}      </Card>
 
       {/* Educational Content */}
       <div className="mt-8 max-w-prose">

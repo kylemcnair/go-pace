@@ -118,3 +118,76 @@ export const predictRaceTimes = (
     };
   });
 };
+// VDOT calculations based on Jack Daniels' Running Formula
+
+// Calculate VDOT from race performance
+export const calculateVDOT = (timeInSeconds: number, distanceKm: number): number => {
+  const velocity = (distanceKm * 1000) / timeInSeconds; // m/s
+  
+  // Simplified VDOT calculation based on velocity
+  const oxygenDemand = -4.6 + 0.182258 * velocity + 0.000104 * Math.pow(velocity, 2);
+  
+  // Distance factor adjustment
+  const distanceFactor = 0.8 + 0.1894393 * Math.exp(-0.012778 * timeInSeconds) + 
+                        0.2989558 * Math.exp(-0.1932605 * timeInSeconds);
+  
+  const vdot = oxygenDemand / distanceFactor;
+  
+  return Math.max(20, Math.min(85, Math.round(vdot * 10) / 10));
+};
+
+// VDOT equivalent times table (times in minutes)
+const VDOT_EQUIVALENTS = [
+  { vdot: 30, marathon: 270, half: 125, tenK: 37, fiveK: 17.5 },
+  { vdot: 35, marathon: 231, half: 107, tenK: 31.2, fiveK: 14.7 },
+  { vdot: 40, marathon: 202, half: 93, tenK: 26.7, fiveK: 12.6 },
+  { vdot: 45, marathon: 179, half: 82, tenK: 23.1, fiveK: 10.8 },
+  { vdot: 50, marathon: 160, half: 73, tenK: 20.4, fiveK: 9.5 },
+  { vdot: 55, marathon: 143, half: 65, tenK: 18.3, fiveK: 8.4 },
+  { vdot: 60, marathon: 130, half: 59, tenK: 16.5, fiveK: 7.5 },
+  { vdot: 65, marathon: 119, half: 53, tenK: 15.0, fiveK: 6.8 },
+  { vdot: 70, marathon: 109, half: 49, tenK: 13.7, fiveK: 6.2 }
+];
+
+// Predict race time using VDOT method
+export const predictTimeWithVDOT = (vdot: number, targetDistance: string): number => {
+  // Find the two closest VDOT values for interpolation
+  let lower = VDOT_EQUIVALENTS[0];
+  let upper = VDOT_EQUIVALENTS[VDOT_EQUIVALENTS.length - 1];
+  
+  for (let i = 0; i < VDOT_EQUIVALENTS.length - 1; i++) {
+    if (vdot >= VDOT_EQUIVALENTS[i].vdot && vdot <= VDOT_EQUIVALENTS[i + 1].vdot) {
+      lower = VDOT_EQUIVALENTS[i];
+      upper = VDOT_EQUIVALENTS[i + 1];
+      break;
+    }
+  }
+  
+  // Linear interpolation between the two values
+  const ratio = upper.vdot === lower.vdot ? 0 : (vdot - lower.vdot) / (upper.vdot - lower.vdot);
+  
+  let timeMinutes: number;
+  switch (targetDistance) {
+    case '5K':
+      timeMinutes = lower.fiveK + ratio * (upper.fiveK - lower.fiveK);
+      break;
+    case '10K':
+      timeMinutes = lower.tenK + ratio * (upper.tenK - lower.tenK);
+      break;
+    case 'Half Marathon':
+      timeMinutes = lower.half + ratio * (upper.half - lower.half);
+      break;
+    case '15K':
+      // Interpolate between 10K and Half Marathon for 15K (15K is ~68% of way from 10K to Half)
+      const tenKTime = lower.tenK + ratio * (upper.tenK - lower.tenK);
+      const halfTime = lower.half + ratio * (upper.half - lower.half);
+      timeMinutes = tenKTime + 0.68 * (halfTime - tenKTime);
+      break;    case 'Marathon':
+      timeMinutes = lower.marathon + ratio * (upper.marathon - lower.marathon);
+      break;
+    default:
+      return 0;
+  }
+  
+  return timeMinutes * 60; // Convert to seconds
+};
