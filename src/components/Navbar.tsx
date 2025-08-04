@@ -69,6 +69,16 @@ function NavbarContent() {
       {/* Mobile Menu */}
       {open && (
         <div className="sm:hidden mt-2 bg-white shadow-md rounded-md py-2 px-4 animate-slide-down">
+          <Link
+            href="/tools"
+            onClick={() => setOpen(false)}
+            className={`block py-2 text-sm font-medium uppercase tracking-wide ${
+              pathname === '/tools' ? 'text-blue-600 font-semibold' : 'text-gray-500'
+            }`}
+          >
+            All Tools
+          </Link>
+          <div className="border-t border-gray-200 my-2"></div>
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -81,18 +91,8 @@ function NavbarContent() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="/tools"
-            onClick={() => setOpen(false)}
-            className={`block py-2 text-base font-medium ${
-              pathname === '/tools' ? 'text-blue-600 font-semibold' : 'text-gray-800'
-            }`}
-          >
-            All Tools
-          </Link>
         </div>
-      )}
-    </nav>
+      )}    </nav>
   );
 }
 
