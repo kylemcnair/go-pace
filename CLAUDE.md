@@ -245,7 +245,7 @@ This helps maintain continuity across sessions and prevents repeating the same d
 ## Code Organization & Reusability
 
 ### Shared Components Pattern
-The codebase uses a modular approach with reusable components in `src/components/shared/`:
+The codebase uses a modular approach with reusable components in `src/components/`:
 
 - **`TimeInputGroup`**: Handles hours/minutes/seconds input patterns with configurable layout
 - **`UnitSelector`**: Standardized mile/km radio button selection  
