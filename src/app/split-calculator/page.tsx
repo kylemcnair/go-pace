@@ -215,14 +215,14 @@ export default function SplitCalculatorPage() {
                 {splitProfile === 0 
                   ? 'Even Splits' 
                   : splitProfile < 0 
-                    ? 'Positive Splits (Slow Down)' 
-                    : 'Negative Splits (Speed Up)'}
+                    ? 'Positive Splits (start faster, gradually slow down)' 
+                    : 'Negative Splits (start slower, speed up later)'}
               </div>
             </div>
 
             <div>
               <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                Split Breakdown:
+                Your Pacing Plan:
               </h3>
               <div className="flex items-center gap-3 mb-3 text-sm font-medium text-gray-600 border-b border-gray-200 pb-2">
                 <div className="w-32 text-center">

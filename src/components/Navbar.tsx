@@ -21,8 +21,8 @@ function NavbarContent() {
   };
 
   const navItems = [
-    { label: 'Pace Calculator', href: '/?mode=pace'},
-    { label: 'Goal Time Calculator', href: '/?mode=time'},
+    { label: 'Calculate Finish Time', href: '/?mode=pace'},
+    { label: 'Calculate Required Pace', href: '/?mode=time'},
     { label: 'Pace Predictor', href: '/pace-predictor'},
     { label: 'Split Calculator', href: '/split-calculator'},
   ];
