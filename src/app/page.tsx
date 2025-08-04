@@ -45,8 +45,8 @@ function HomeContent() {
       answer: "These calculations show your mathematical pace, but real race performance varies due to terrain, weather, fitness level, and race strategy. Use these as guidelines for training and goal setting rather than exact predictions."
     },
     {
-      question: "What's the difference between mile pace and kilometer pace?",
-      answer: "Mile pace is time per mile (used commonly in the US), while kilometer pace is time per kilometer (used internationally). A 7:00 mile pace equals approximately 4:21 per kilometer."
+      question: "How do I convert between mile pace and kilometer pace?",
+      answer: "To convert mile pace to km pace: divide by 1.609. To convert km pace to mile pace: multiply by 1.609. For example, a 7:00 mile pace equals 4:21 per kilometer, and a 5:00 km pace equals 8:03 per mile."
     },
     {
       question: "Should I use my race pace for training runs?",
