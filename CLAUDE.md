@@ -240,3 +240,55 @@ When working on this codebase, if you encounter patterns, solutions, or requirem
 - Any fixes to development environment issues
 
 This helps maintain continuity across sessions and prevents repeating the same debugging work.
+
+
+## Code Organization & Reusability
+
+### Shared Components Pattern
+The codebase uses a modular approach with reusable components in `src/components/shared/`:
+
+- **`TimeInputGroup`**: Handles hours/minutes/seconds input patterns with configurable layout
+- **`UnitSelector`**: Standardized mile/km radio button selection  
+- **`DistanceSelect`**: Flexible dropdown for race distance selection (enhanced, replaces old TimeDisplay)
+
+**Usage Examples:**
+```typescript
+// Time inputs (hours/minutes/seconds)
+<TimeInputGroup 
+  hours={timeHours} minutes={timeMinutes} seconds={timeSeconds}
+  onHoursChange={setTimeHours} onMinutesChange={setTimeMinutes} onSecondsChange={setTimeSeconds}
+  showHours={true} idPrefix="goal-time" 
+/>
+
+// Unit selection (mile/km)
+<UnitSelector 
+  unit={unit} onUnitChange={setUnit} 
+  idPrefix="pace" className="mb-6" 
+/>
+```
+
+### Centralized Calculation Utilities
+All calculation logic is in `src/utils/`:
+
+- **`paceCalculations.ts`**: All pace/time calculation functions with type safety
+- **`distances.ts`**: Single source of truth for race distances (5K, 10K, 15K, Half, Marathon)
+- **`formatTime.ts`**: Time formatting utilities for consistent display
+
+**Usage:**
+```typescript
+import { calculateAllFinishTimes, calculateRequiredPace } from '@/utils/paceCalculations';
+import { getDistanceByLabel } from '@/utils/distances';
+
+// Get finish times for all distances
+const finishTimes = calculateAllFinishTimes(paceMinutes, paceSeconds, distances, unit);
+
+// Calculate required pace for specific distance
+const selectedRace = getDistanceByLabel(selectedDistance);
+const requiredPace = calculateRequiredPace(hours, minutes, seconds, selectedRace, unit);
+```
+
+**Benefits:**
+- Single source of truth for distances and calculations
+- Type safety with consistent interfaces
+- Easy maintenance - changes in one place update everywhere
+- Reusable components prevent code duplication
