@@ -39,7 +39,7 @@ export default function PacePredictorPage() {
   const [raceMinutes, setRaceMinutes] = useState('');
   const [raceSeconds, setRaceSeconds] = useState('');
   const [selectedRaceLabel, setSelectedRaceLabel] = useState('10K');
-
+  const [selectedMethod, setSelectedMethod] = useState('riegel');
   const totalTimeInSeconds =
     Number(raceHours || 0) * 3600 +
     Number(raceMinutes || 0) * 60 +
@@ -61,7 +61,7 @@ export default function PacePredictorPage() {
     ? calculateVDOT(totalTimeInSeconds, selectedDistanceKm)
     : null, [totalTimeInSeconds, selectedDistanceKm]);
 
-  const predictions = useMemo(() => {
+  const allPredictions = useMemo(() => {
     if (totalTimeInSeconds <= 0 || selectedDistanceKm <= 0 || !userVDOT) {
       return [];
     }
@@ -80,12 +80,12 @@ export default function PacePredictorPage() {
           vdot: formatTime(vdotSeconds)
         };
       });
-  }, [totalTimeInSeconds, selectedDistanceKm, userVDOT, selectedRaceLabel]);  return (
+  }, [totalTimeInSeconds, selectedDistanceKm, userVDOT, selectedRaceLabel]);
+  return (
     <ToolPageLayout
       title="Pace Predictor"
       subtitle="Enter a recent race result to predict your finish times using multiple proven running formulas."
     >
-      {/* Card */}
       <Card>
         {/* Distance selector */}
         <div className="mb-5">
@@ -138,28 +138,54 @@ export default function PacePredictorPage() {
           />
         </div>
 
+        {/* Prediction Method Selector */}
+        {allPredictions.length > 0 && (
+          <div className="mb-6">
+            <label className="block mb-3 font-medium text-lg text-gray-800">
+              Prediction Method:
+            </label>
+            <div className="flex gap-6">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="riegel"
+                  checked={selectedMethod === 'riegel'}
+                  onChange={e => setSelectedMethod(e.target.value)}
+                  className="mr-2"
+                />
+                <span className="text-gray-700">Riegel Formula</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  value="vdot"
+                  checked={selectedMethod === 'vdot'}
+                  onChange={e => setSelectedMethod(e.target.value)}
+                  className="mr-2"
+                />
+                <span className="text-gray-700">VDOT (Daniels)</span>
+              </label>
+            </div>
+          </div>
+        )}
 
         {/* Predictions list */}
-        {predictions.length > 0 && (
+        {allPredictions.length > 0 && (
           <div>
             <h3 className="text-xl font-semibold mb-4 text-gray-800">
               Predicted Finish Times:
             </h3>
             <div className="space-y-4">
-              {predictions.map(p => (
+              {allPredictions.map(p => (
                 <div key={p.label} className="border border-gray-200 rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-lg font-medium text-gray-800">{p.label}</span>
+                    <span className="text-xl font-bold text-blue-600">
+                      {selectedMethod === 'riegel' ? p.riegel : p.vdot}
+                    </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="text-center">
-                      <div className="text-gray-600">Riegel Formula</div>
-                      <div className="font-semibold text-blue-600">{p.riegel}</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-gray-600">Daniels VDOT</div>
-                      <div className="font-semibold text-green-600">{p.vdot}</div>
-                    </div>
+                  <div className="text-sm text-gray-500 text-right">
+                    {selectedMethod === 'riegel' ? 'Riegel Formula' : 'VDOT Method'}
                   </div>
                 </div>
               ))}
@@ -173,7 +199,8 @@ export default function PacePredictorPage() {
         <div className="p-4 bg-blue-50 rounded-lg mb-6">
           <h3 className="font-semibold text-gray-800 mb-2">How Race Prediction Works</h3>
           <p className="text-gray-700 text-sm">
-            Our predictions use two proven methods: The Riegel formula (T₁ × (D₂ ÷ D₁)^1.06) accounts for the aerobic and anaerobic demands of different distances. The VDOT method uses Jack Daniels&#39; equivalent performance tables based on your aerobic fitness level. Both assume proper training for the target distance and similar racing conditions.          </p>
+            Our predictions use two proven methods: The Riegel formula (T₁ × (D₂ ÷ D₁)^1.06) accounts for the aerobic and anaerobic demands of different distances. The VDOT method uses Jack Daniels&#39; equivalent performance tables based on your aerobic fitness level. Both assume proper training for the target distance and similar racing conditions.
+          </p>
         </div>
       </div>
 
