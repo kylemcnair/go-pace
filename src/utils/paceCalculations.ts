@@ -122,18 +122,60 @@ export const predictRaceTimes = (
 
 // Calculate VDOT from race performance
 export const calculateVDOT = (timeInSeconds: number, distanceKm: number): number => {
-  const velocity = (distanceKm * 1000) / timeInSeconds; // m/s
   
-  // Simplified VDOT calculation based on velocity
-  const oxygenDemand = -4.6 + 0.182258 * velocity + 0.000104 * Math.pow(velocity, 2);
+  // Use reverse lookup from VDOT table to find closest match
+  // Convert time to minutes for comparison with table
+  const timeInMinutes = timeInSeconds / 60;
   
-  // Distance factor adjustment
-  const distanceFactor = 0.8 + 0.1894393 * Math.exp(-0.012778 * timeInSeconds) + 
-                        0.2989558 * Math.exp(-0.1932605 * timeInSeconds);
+  let bestVdot = 30;
+  let smallestDiff = Infinity;
   
-  const vdot = oxygenDemand / distanceFactor;
+  // Check each VDOT level to find the best match
+  VDOT_EQUIVALENTS.forEach(entry => {
+    let tableTime;
+    
+    // Get the equivalent time for this distance from the table
+    if (distanceKm === 5) {
+      tableTime = entry.fiveK;
+    } else if (distanceKm === 10) {
+      tableTime = entry.tenK;
+    } else if (distanceKm >= 21 && distanceKm <= 21.2) {
+      tableTime = entry.half;
+    } else if (distanceKm >= 42 && distanceKm <= 42.3) {
+      tableTime = entry.marathon;
+    } else if (distanceKm === 15) {
+      // Interpolate 15K between 10K and half marathon
+      tableTime = entry.tenK + 0.68 * (entry.half - entry.tenK);
+    } else {
+      return; // Skip unsupported distances
+    }
+    
+    const diff = Math.abs(timeInMinutes - tableTime);
+    if (diff < smallestDiff) {
+      smallestDiff = diff;
+      bestVdot = entry.vdot;
+    }
+  });
   
-  return Math.max(20, Math.min(85, Math.round(vdot * 10) / 10));
+  // If time is slower than VDOT 30, extrapolate downward
+  if (smallestDiff > 5) {
+    const vdot30Entry = VDOT_EQUIVALENTS[0];
+    let vdot30Time;
+    if (distanceKm === 5) vdot30Time = vdot30Entry.fiveK;
+    else if (distanceKm === 10) vdot30Time = vdot30Entry.tenK;
+    else if (distanceKm >= 21 && distanceKm <= 21.2) vdot30Time = vdot30Entry.half;
+    else if (distanceKm >= 42 && distanceKm <= 42.3) vdot30Time = vdot30Entry.marathon;
+    else if (distanceKm === 15) vdot30Time = vdot30Entry.tenK + 0.68 * (vdot30Entry.half - vdot30Entry.tenK);
+    
+    if (vdot30Time && timeInMinutes > vdot30Time) {
+      // Extrapolate below VDOT 30
+      const extraMinutes = timeInMinutes - vdot30Time;
+      bestVdot = Math.max(20, 30 - (extraMinutes / vdot30Time) * 15);
+    }
+  }
+  
+  
+  return Math.round(bestVdot * 10) / 10;
 };
 
 // VDOT equivalent times table (times in minutes)
@@ -151,6 +193,43 @@ const VDOT_EQUIVALENTS = [
 
 // Predict race time using VDOT method
 export const predictTimeWithVDOT = (vdot: number, targetDistance: string): number => {
+  // Handle boundary cases first
+  if (vdot <= VDOT_EQUIVALENTS[0].vdot) {
+    // Below VDOT 30 - extrapolate slower times
+    const lowest = VDOT_EQUIVALENTS[0];
+    const vdotDiff = VDOT_EQUIVALENTS[0].vdot - vdot; // How far below VDOT 30
+    const slowdownFactor = 1 + (vdotDiff / 30) * 0.5; // Extrapolate slower
+    
+    let timeMinutes: number;
+    switch (targetDistance) {
+      case '5K': timeMinutes = lowest.fiveK * slowdownFactor; break;
+      case '10K': timeMinutes = lowest.tenK * slowdownFactor; break;
+      case 'Half Marathon': timeMinutes = lowest.half * slowdownFactor; break;
+      case '15K': timeMinutes = (lowest.tenK + 0.68 * (lowest.half - lowest.tenK)) * slowdownFactor; break;
+      case 'Marathon': timeMinutes = lowest.marathon * slowdownFactor; break;
+      default: return 0;
+    }
+    return timeMinutes * 60;
+  }
+  
+  if (vdot >= VDOT_EQUIVALENTS[VDOT_EQUIVALENTS.length - 1].vdot) {
+    // Above VDOT 70 - extrapolate faster times
+    const highest = VDOT_EQUIVALENTS[VDOT_EQUIVALENTS.length - 1];
+    const vdotDiff = vdot - VDOT_EQUIVALENTS[VDOT_EQUIVALENTS.length - 1].vdot;
+    const speedupFactor = 1 - (vdotDiff / 70) * 0.3; // Extrapolate faster
+    
+    let timeMinutes: number;
+    switch (targetDistance) {
+      case '5K': timeMinutes = highest.fiveK * speedupFactor; break;
+      case '10K': timeMinutes = highest.tenK * speedupFactor; break;
+      case 'Half Marathon': timeMinutes = highest.half * speedupFactor; break;
+      case '15K': timeMinutes = (highest.tenK + 0.68 * (highest.half - highest.tenK)) * speedupFactor; break;
+      case 'Marathon': timeMinutes = highest.marathon * speedupFactor; break;
+      default: return 0;
+    }
+    return timeMinutes * 60;
+  }
+  
   // Find the two closest VDOT values for interpolation
   let lower = VDOT_EQUIVALENTS[0];
   let upper = VDOT_EQUIVALENTS[VDOT_EQUIVALENTS.length - 1];
@@ -182,7 +261,8 @@ export const predictTimeWithVDOT = (vdot: number, targetDistance: string): numbe
       const tenKTime = lower.tenK + ratio * (upper.tenK - lower.tenK);
       const halfTime = lower.half + ratio * (upper.half - lower.half);
       timeMinutes = tenKTime + 0.68 * (halfTime - tenKTime);
-      break;    case 'Marathon':
+      break;
+    case 'Marathon':
       timeMinutes = lower.marathon + ratio * (upper.marathon - lower.marathon);
       break;
     default:

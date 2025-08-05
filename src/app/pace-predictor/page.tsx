@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import ToolPageLayout from '@/components/ToolPageLayout';
 import Card from '@/components/Card';
 import RunningFAQ from '@/components/RunningFAQ';
@@ -10,6 +10,14 @@ const standardDistances = RACE_DISTANCES;
 
 export default function PacePredictorPage() {
   const pacePredictorFAQs = [
+    {
+      question: "What's the difference between Riegel and VDOT predictions?",
+      answer: "We show two proven methods for comparison. The Riegel Formula uses a simple mathematical relationship between distances. VDOT (Daniels method) uses your aerobic fitness level based on established equivalent performance tables. Riegel tends to be more conservative for longer distances, while VDOT accounts for training adaptations."
+    },
+    {
+      question: "Which prediction method should I trust more?",
+      answer: "Both are scientifically validated. If you're well-trained with good endurance base, VDOT predictions may be more accurate. For newer runners or those without specific distance training, Riegel predictions tend to be more realistic. Use both as a range - your actual performance will likely fall between them."
+    },
     {
       question: "How accurate are race time predictions?",
       answer: "Race predictions are estimates based on your current performance and established running formulas. Actual results depend on training, race conditions, strategy, and individual physiology. Use predictions as training goals, not guarantees."
@@ -23,15 +31,10 @@ export default function PacePredictorPage() {
       answer: "Not for all runs. Use predicted paces for specific workouts like tempo runs and race-pace intervals. Most training should be at an easy, conversational pace to build aerobic fitness safely."
     },
     {
-      question: "How often should I update my race predictions?",
-      answer: "Update predictions after completing a race or time trial, or every 4-6 weeks during consistent training. Significant improvements typically take 6-12 weeks of consistent training to appear."
-    },
-    {
       question: "Can I use shorter races to predict marathon times?",
       answer: "Yes, but longer predictions become less accurate. A 5K predicts 10K well, but marathon predictions require good endurance base. Marathon performance depends heavily on long run training and fueling strategy."
     }
   ];
-
   const [raceHours, setRaceHours] = useState('');
   const [raceMinutes, setRaceMinutes] = useState('');
   const [raceSeconds, setRaceSeconds] = useState('');
@@ -54,29 +57,30 @@ export default function PacePredictorPage() {
     }
   };
 
-  const userVDOT = totalTimeInSeconds > 0 && selectedDistanceKm > 0 
+  const userVDOT = useMemo(() => totalTimeInSeconds > 0 && selectedDistanceKm > 0 
     ? calculateVDOT(totalTimeInSeconds, selectedDistanceKm)
-    : null;
+    : null, [totalTimeInSeconds, selectedDistanceKm]);
 
-  const predictions =
-    totalTimeInSeconds > 0 && selectedDistanceKm > 0
-      ? standardDistances
-          .filter(d => d.label !== selectedRaceLabel)
-          .map(d => {
-            // Riegel prediction
-            const riegelSeconds = totalTimeInSeconds * Math.pow(d.km / selectedDistanceKm, 1.06);
-            
-            // VDOT prediction
-            const vdotSeconds = predictTimeWithVDOT(userVDOT!, d.label);
-            
-            return { 
-              label: d.label, 
-              riegel: formatTime(riegelSeconds),
-              vdot: formatTime(vdotSeconds)
-            };
-          })
-      : [];
-  return (
+  const predictions = useMemo(() => {
+    if (totalTimeInSeconds <= 0 || selectedDistanceKm <= 0 || !userVDOT) {
+      return [];
+    }
+    return standardDistances
+      .filter(d => d.label !== selectedRaceLabel)
+      .map(d => {
+        // Riegel prediction
+        const riegelSeconds = totalTimeInSeconds * Math.pow(d.km / selectedDistanceKm, 1.06);
+        
+        // VDOT prediction
+        const vdotSeconds = predictTimeWithVDOT(userVDOT, d.label);
+        
+        return { 
+          label: d.label, 
+          riegel: formatTime(riegelSeconds),
+          vdot: formatTime(vdotSeconds)
+        };
+      });
+  }, [totalTimeInSeconds, selectedDistanceKm, userVDOT, selectedRaceLabel]);  return (
     <ToolPageLayout
       title="Pace Predictor"
       subtitle="Enter a recent race result to predict your finish times using multiple proven running formulas."
@@ -134,20 +138,7 @@ export default function PacePredictorPage() {
           />
         </div>
 
-        {/* VDOT display */}
-        {totalTimeInSeconds > 0 && selectedDistanceKm > 0 && (
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-            <div className="text-center">
-              <div className="text-sm text-gray-600 mb-1">Your VDOT Score</div>
-              <div className="text-2xl font-bold text-blue-600">
-                {userVDOT}
-              </div>
-              <div className="text-sm text-gray-600">
-                A measure of your aerobic running fitness (Daniels VDOT)
-              </div>
-            </div>
-          </div>
-        )}
+
         {/* Predictions list */}
         {predictions.length > 0 && (
           <div>
@@ -174,16 +165,15 @@ export default function PacePredictorPage() {
               ))}
             </div>
           </div>
-        )}      </Card>
+        )}
+      </Card>
 
       {/* Educational Content */}
       <div className="mt-8 max-w-prose">
         <div className="p-4 bg-blue-50 rounded-lg mb-6">
           <h3 className="font-semibold text-gray-800 mb-2">How Race Prediction Works</h3>
           <p className="text-gray-700 text-sm">
-            Our predictions use the Riegel formula: T₁ × (D₂ ÷ D₁)^1.06, which accounts for the aerobic and anaerobic demands of different distances. 
-            The formula assumes proper training for the target distance and similar racing conditions.
-          </p>
+            Our predictions use two proven methods: The Riegel formula (T₁ × (D₂ ÷ D₁)^1.06) accounts for the aerobic and anaerobic demands of different distances. The VDOT method uses Jack Daniels' equivalent performance tables based on your aerobic fitness level. Both assume proper training for the target distance and similar racing conditions.          </p>
         </div>
       </div>
 

@@ -292,3 +292,24 @@ const requiredPace = calculateRequiredPace(hours, minutes, seconds, selectedRace
 - Type safety with consistent interfaces
 - Easy maintenance - changes in one place update everywhere
 - Reusable components prevent code duplication
+
+### VDOT Pace Predictor Implementation (August 2025)
+
+**Issue**: VDOT predictions weren't updating when race time inputs changed, while Riegel predictions worked correctly.
+
+**Root Causes Found**:
+1. **React Memoization**: The `predictions` calculation wasn't wrapped in `useMemo`, so React didn't recalculate VDOT predictions when inputs changed
+2. **Broken VDOT Formula**: The original `calculateVDOT` function had an incorrect mathematical formula that always returned negative values, getting clamped to minimum (20)
+3. **Boundary Handling**: The `predictTimeWithVDOT` function didn't properly handle VDOT values outside the 30-70 table range
+
+**Solutions Applied**:
+1. **Memoization**: Wrapped both `userVDOT` and `predictions` calculations in `useMemo` with proper dependency arrays
+2. **VDOT Calculation**: Replaced broken formula with reverse table lookup that finds closest match from VDOT equivalents table
+3. **Boundary Extrapolation**: Added proper handling for VDOT values below 30 and above 70 using scaling factors
+4. **UX Improvement**: Removed prominent VDOT score display as it confused users who just want race predictions
+
+**Key Files Modified**:
+- `src/app/pace-predictor/page.tsx`: React memoization and UI
+- `src/utils/paceCalculations.ts`: VDOT calculation and prediction logic
+
+**Debugging Pattern**: When predictions aren't updating, check both React-level issues (memoization) and calculation-level issues (mathematical formulas). Use console logging to trace values through the calculation pipeline.
