@@ -11,7 +11,7 @@ const standardDistances = RACE_DISTANCES;
 export default function PacePredictorPage() {
   const pacePredictorFAQs = [
     {
-      question: "What's the difference between Riegel and VDOT predictions?",
+      question: `What's the difference between Riegel and VDOT predictions?`,
       answer: "We show two proven methods for comparison. The Riegel Formula uses a simple mathematical relationship between distances. VDOT (Daniels method) uses your aerobic fitness level based on established equivalent performance tables. Riegel tends to be more conservative for longer distances, while VDOT accounts for training adaptations."
     },
     {
@@ -173,7 +173,7 @@ export default function PacePredictorPage() {
         <div className="p-4 bg-blue-50 rounded-lg mb-6">
           <h3 className="font-semibold text-gray-800 mb-2">How Race Prediction Works</h3>
           <p className="text-gray-700 text-sm">
-            Our predictions use two proven methods: The Riegel formula (T₁ × (D₂ ÷ D₁)^1.06) accounts for the aerobic and anaerobic demands of different distances. The VDOT method uses Jack Daniels' equivalent performance tables based on your aerobic fitness level. Both assume proper training for the target distance and similar racing conditions.          </p>
+            Our predictions use two proven methods: The Riegel formula (T₁ × (D₂ ÷ D₁)^1.06) accounts for the aerobic and anaerobic demands of different distances. The VDOT method uses Jack Daniels&#39; equivalent performance tables based on your aerobic fitness level. Both assume proper training for the target distance and similar racing conditions.          </p>
         </div>
       </div>
 
