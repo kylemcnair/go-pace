@@ -138,6 +138,17 @@ export default function PacePredictorPage() {
           />
         </div>
 
+        {/* VDOT Score Display */}
+        {userVDOT && (
+          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-1">Your VDOT Score</p>
+              <p className="text-3xl font-bold text-blue-600">{Math.round(userVDOT)}</p>
+              <p className="text-xs text-gray-500 mt-1">Based on your {selectedRaceLabel} time</p>
+            </div>
+          </div>
+        )}
+
         {/* Prediction Method Selector */}
         {allPredictions.length > 0 && (
           <div className="mb-6">

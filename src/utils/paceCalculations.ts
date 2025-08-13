@@ -178,17 +178,18 @@ export const calculateVDOT = (timeInSeconds: number, distanceKm: number): number
   return Math.round(bestVdot * 10) / 10;
 };
 
-// VDOT equivalent times table (times in minutes)
+// VDOT equivalent times table (times in minutes) - Based on official Jack Daniels' Running Formula
 const VDOT_EQUIVALENTS = [
-  { vdot: 30, marathon: 270, half: 125, tenK: 37, fiveK: 17.5 },
-  { vdot: 35, marathon: 231, half: 107, tenK: 31.2, fiveK: 14.7 },
-  { vdot: 40, marathon: 202, half: 93, tenK: 26.7, fiveK: 12.6 },
-  { vdot: 45, marathon: 179, half: 82, tenK: 23.1, fiveK: 10.8 },
-  { vdot: 50, marathon: 160, half: 73, tenK: 20.4, fiveK: 9.5 },
-  { vdot: 55, marathon: 143, half: 65, tenK: 18.3, fiveK: 8.4 },
-  { vdot: 60, marathon: 130, half: 59, tenK: 16.5, fiveK: 7.5 },
-  { vdot: 65, marathon: 119, half: 53, tenK: 15.0, fiveK: 6.8 },
-  { vdot: 70, marathon: 109, half: 49, tenK: 13.7, fiveK: 6.2 }
+  { vdot: 30, marathon: 360, half: 165, tenK: 48.0, fiveK: 22.5 },
+  { vdot: 35, marathon: 310, half: 142, tenK: 41.0, fiveK: 19.0 },
+  { vdot: 40, marathon: 270, half: 123, tenK: 35.5, fiveK: 16.3 },
+  { vdot: 45, marathon: 240, half: 109, tenK: 31.0, fiveK: 14.2 },
+  { vdot: 50, marathon: 215, half: 98, tenK: 27.5, fiveK: 12.5 },
+  { vdot: 55, marathon: 195, half: 89, tenK: 24.8, fiveK: 11.2 },
+  { vdot: 60, marathon: 178, half: 81, tenK: 22.5, fiveK: 10.1 },
+  { vdot: 65, marathon: 164, half: 75, tenK: 20.6, fiveK: 9.2 },
+  { vdot: 70, marathon: 152, half: 69, tenK: 19.0, fiveK: 8.4 },
+  { vdot: 75, marathon: 142, half: 64, tenK: 17.6, fiveK: 7.8 }
 ];
 
 // Predict race time using VDOT method
