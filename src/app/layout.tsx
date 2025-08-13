@@ -5,9 +5,9 @@ import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gopace.run"),
-  title: "GoPace – Free Running Pace Calculator",
+  title: "Running Pace Calculator & Converter | GoPace",
   description:
-    "Free running pace calculator for 5K, 10K, half marathon, and marathon. Calculate finish times or required pace easily.",
+    "Free running pace calculator and converter. Calculate finish times, convert between mile/km pace, and find required pace for 5K, 10K, half marathon, and marathon.",
   openGraph: {
     title: "GoPace – Free Running Pace Calculator",
     description:
@@ -56,6 +56,31 @@ export default function RootLayout({
         />
 
         {children}
+
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "GoPace",
+              "applicationCategory": "HealthApplication",
+              "operatingSystem": "All",
+              "description": "Free running pace calculator for 5K, 10K, half marathon, and marathon. Calculate finish times or required pace easily.",
+              "url": "https://gopace.run",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "creator": {
+                "@type": "Organization",
+                "name": "GoPace"
+              }
+            })
+          }}
+        />
 
         {/* Vercel Analytics */}
         <Analytics />
